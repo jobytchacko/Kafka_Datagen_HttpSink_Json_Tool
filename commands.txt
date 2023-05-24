@@ -1,0 +1,84 @@
+confluent connect cluster create --config-file datagen-source-config.json
+
+confluent connect cluster list
+
+confluent connect plugin describe DatagenSource -o json
+
+confluent kafka topic delete transactions
+
+confluent connect delete <connector ID>
+
+confluent connect describe <connector ID>
+
+confluent connect resume <connector ID>
+
+confluent connect pause <connector ID>
+
+=================================================================================
+
+1 {
+  2     'Orientation Sensor':
+  3     [
+  4         {
+  5             sampleTime: '1450632410296',
+  6             data: '76.36731:3.4651554:0.5665419'
+  7         },
+  8         {
+  9             sampleTime: '1450632410296',
+ 10             data: '78.15431:0.5247617:-0.20050584'
+ 11         }
+ 12     ],
+ 13     'Screen Orientation Sensor':
+ 14     [
+ 15         {
+ 16             sampleTime: '1450632410296',
+ 17             data: '255.0:-1.0:0.0'
+ 18         }
+ 19     ],
+ 20     'MPU6500 Gyroscope sensor UnCalibrated':
+ 21     [
+ 22         {
+ 23             sampleTime: '1450632410296',
+ 24             data: '-0.05006743:-0.013848438:-0.0063915867
+ 25         },
+ 26         {
+ 27             sampleTime: '1450632410296',
+ 28             data: '-0.051132694:-0.0127831735:-0.003325345'
+ 29         }
+ 30     ]
+ 31 }
+
+===============================================================================
+ var o = {} // empty Object
+var key = 'Orientation Sensor';
+o[key] = []; // empty Array, which you can push() values into
+
+
+var data = {
+    sampleTime: '1450632410296',
+    data: '76.36731:3.4651554:0.5665419'
+};
+var data2 = {
+    sampleTime: '1450632410296',
+    data: '78.15431:0.5247617:-0.20050584'
+};
+o[key].push(data);
+o[key].push(data2);
+
+=========================================================
+
+myObj = new Object()
+myObj.key = value;
+myObj[key2] = value2;   // Alternative
+
+======================================================================
+
+
+var result = [];
+for (var name in goals) {
+  if (goals.hasOwnProperty(name)) {
+    result.push({name: name, goals: goals[name]});
+  }
+}
+
+================================================================

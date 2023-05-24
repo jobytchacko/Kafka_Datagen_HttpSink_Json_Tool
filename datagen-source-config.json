@@ -1,0 +1,15 @@
+{
+    "name": "DatagenSourceConnector_0",
+    "config": {
+      "connector.class": "DatagenSource",
+      "name": "DatagenSourceConnector_3",
+      "kafka.auth.mode": "KAFKA_API_KEY",
+      "kafka.api.key": "LBQI5FO4NTSQKS4Y",
+      "kafka.api.secret": "XxWYNcND/JEIUWIWEjv7B5jnPU0fIs/hBUPi0N19VLe7C2ulql7Oo3HWxaw6ziBY",
+      "kafka.topic": "ust_poc",
+      "output.data.format": "AVRO",
+      "tasks.max": "1",
+	  "schema.string":"{\n  \"connect.name\": \"lithin.personal.ust_data\",\n  \"fields\": [\n    {\n      \"name\": \"Nsame\",\n      \"type\": \"string\"\n    },\n    {\n      \"name\": \"office\",\n      \"type\": \"string\"\n    },\n    {\n      \"name\": \"user_id\",\n      \"type\": \"string\"\n    },\n    {\n      \"name\": \"employee_id\",\n      \"type\": \"long\"\n    },\n    {\n      \"name\": \"cubicle_num\",\n      \"type\": \"int\"\n    }\n  ],\n  \"name\": \"ust_data\",\n  \"namespace\": \"lithin.personal\",\n  \"type\": \"record\"\n}"
+	  
+    }
+  }

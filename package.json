@@ -1,0 +1,17 @@
+{
+  "name": "kafka_node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "main": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ip": "^1.1.8",
+    "kafkajs": "^2.2.4",
+    "properties-reader": "^2.2.0"
+  }
+}

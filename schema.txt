@@ -1,0 +1,28 @@
+{
+  "connect.name": "lithin.personal.ust_data",
+  "fields": [
+    {
+      "name": "Nsame",
+      "type": "string"
+    },
+    {
+      "name": "office",
+      "type": "string"
+    },
+    {
+      "name": "user_id",
+      "type": "string"
+    },
+    {
+      "name": "employee_id",
+      "type": "long"
+    },
+    {
+      "name": "cubicle_num",
+      "type": "int"
+    }
+  ],
+  "name": "ust_data",
+  "namespace": "lithin.personal",
+  "type": "record"
+}
