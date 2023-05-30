@@ -1,5 +1,5 @@
 {
-	  "name": "Datagen_withoutregex",
+	  "name": "Datagen_Without_Regex",
       "connector.class": "io.confluent.kafka.connect.datagen.DatagenConnector",
       "kafka.api.key": "LBQI5FO4NTSQKS4Y",
       "kafka.api.secret": "XxWYNcND/JEIUWIWEjv7B5jnPU0fIs/hBUPi0N19VLe7C2ulql7Oo3HWxaw6ziBY",
