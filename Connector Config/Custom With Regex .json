@@ -1,0 +1,10 @@
+{
+    "name": "Datagen_withregex5",
+    "connector.class": "io.confluent.kafka.connect.datagen.DatagenConnector",
+    "kafka.api.key": "LBQI5FO4NTSQKS4Y",
+    "kafka.api.secret": "XxWYNcND/JEIUWIWEjv7B5jnPU0fIs/hBUPi0N19VLe7C2ulql7Oo3HWxaw6ziBY",
+    "kafka.topic": "withregex",
+    "output.data.format": "AVRO",
+    "tasks.max": "1",
+    "schema.string": "{\"connect.name\":\"lithin.personal.ust_data\",\"fields\":[{\"name\":\"Name\",\"type\":{\"type\":\"string\",\"arg.properties\":{\"regex\":\"User_[1-9]{0,1}\"}}},{\"name\":\"office\",\"type\":\"string\"},{\"name\":\"user_id\",\"type\":\"string\"},{\"name\":\"employee_id\",\"type\":\"long\"},{\"name\":\"cubicle_num\",\"type\":\"int\"}],\"name\":\"ust_data\",\"namespace\":\"lithin.personal\",\"type\":\"record\"}"
+}

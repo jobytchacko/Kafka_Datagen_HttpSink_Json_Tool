@@ -1,0 +1,8 @@
+{
+    "name" : "datagen_PAGEVIEWS",
+    "connector.class": "io.confluent.kafka.connect.datagen.DatagenConnector",
+    "kafka.topic" : "PAGEVIEWS",
+    "output.data.format" : "JSON",
+    "quickstart" : "PAGEVIEWS",
+    "tasks.max" : "1"
+}
