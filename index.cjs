@@ -3,12 +3,13 @@
  */
 const projectId = 'ecstatic-cosmos-387220';
 
+
 // import  Compute from '@google-cloud/compute';
-const { InstancesClient } = require('@google-cloud/compute');
+const { InstancesClient , ZonesClient} = require('@google-cloud/compute');
 
 // List all instances in the specified project.
 async function listAllInstances() {
-  const instancesClient = new Compute.InstancesClient();
+  const instancesClient = new InstancesClient();
 
   //Use the `maxResults` parameter to limit the number of results that the API returns per response page.
   const aggListRequest = instancesClient.aggregatedListAsync({
@@ -37,8 +38,9 @@ async function listAllInstances() {
 
 
 
-const computevm = new InstancesClient();
-const zone = computevm.zone('your-zone'); // Replace 'your-zone' with your desired zone, e.g., 'us-central1-a'
+const zone = new ZonesClient();
+
+// const zone = computevm.cr('your-zone'); // Replace 'your-zone' with your desired zone, e.g., 'us-central1-a'
 
 const vmConfig = {
   name: 'node-vm', // Replace 'your-vm-name' with your desired VM name

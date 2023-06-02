@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "export GOOGLE_APPLICATION_CREDENTIALS='./gcloud.json' && node index.cjs"
+    "start": "export GOOGLE_APPLICATION_CREDENTIALS='./gcloud.json' && node i.cjs"
   },
   "author": "",
   "license": "ISC",
