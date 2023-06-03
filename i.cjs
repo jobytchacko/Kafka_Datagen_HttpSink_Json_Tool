@@ -33,5 +33,5 @@ createVM(zone, name, sourceInstanceTemplate).then( a => {
  } ).catch(console.error);
 
 
- const {stdout} = await execa('echo', ['unicorns']);
- console.log(stdout);
+ const branch = await $`git branch --show-current`;
+ await $`dep deploy --branch=${branch}`;
