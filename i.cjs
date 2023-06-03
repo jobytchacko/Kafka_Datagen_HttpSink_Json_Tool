@@ -1,45 +1,37 @@
-const Compute = require('@google-cloud/compute');
+const {InstancesClient } = require('@google-cloud/compute').v1;
+const {auth} = require('google-auth-library');
+import {$} from 'execa';
 
+
+const name = 'a-name4';
+const zone = 'us-central1-a';
 const projectId = 'ecstatic-cosmos-387220';
+const sourceInstanceTemplate = `ubuntu-med`;
 
 
-// const vmConfig = {
-//   name: 'node-vm', // Replace 'your-vm-name' with your desired VM name
-//   machineType: 'n1-standard-1', // Replace 'your-machine-type' with the desired machine type, e.g., 'n1-standard-1'
-//   disks: [
-//     {
-//       boot: true,
-//       initializeParams: {
-//         sourceImage: 'projects/debian-cloud/global/images/debian-10-buster-v20220929', // Replace 'your-image' with the desired image, e.g., 'projects/debian-cloud/global/images/debian-10-buster-v20220929'
-//       },
-//     },
-//   ],
-// };
-
-async function createVM() {
-  try {
-
-    const {InstancesClient} = require('@google-cloud/compute').v1;
-    const computeClient = new InstancesClient();
-    const the_compute_instance = await computeClient.get({instance: "lithin", project: projectId , zone: "us-central1-a"})
-    const public_ip = the_compute_instance[0]["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
-    console.log(public_ip)
-
-
-
-//     const zone = new ZonesClient();
-// const zone = computevm.cr('your-zone'); // Replace 'your-zone' with your desired zone, e.g., 'us-central1-a'
-// const compute = new Compute();
-// const zone1 = compute.zone('fdfdg');
-
-
-  } catch (err) {
-    console.error('Error creating VM:', err);
-  }
+async function createVM(zone, vmName, templateName) {
+  const client = await auth.getClient({  scopes: 'https://www.googleapis.com/auth/cloud-platform' });
+  
+  const sourceInstanceTemplate = `projects/${projectId}/global/instanceTemplates/${templateName}`;
+  const url = `https://www.googleapis.com/compute/v1/projects/${projectId}/zones/${zone}/instances?sourceInstanceTemplate=${sourceInstanceTemplate}`;
+  
+  return await client.request({  url: url,  method: 'post',  data: {name: vmName} });
 }
 
-createVM();
+async function getIPAddress() {
+    const computeClient = new InstancesClient();
+    const the_compute_instance = await computeClient.get({instance: name, project: projectId , zone: zone});
+    return the_compute_instance[0]["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
+
+}
+
+createVM(zone, name, sourceInstanceTemplate).then( a => {
+
+  console.log("-------------------------------------------------------------");
+  getIPAddress().then(a => console.log(a)).catch(console.error)
+  
+ } ).catch(console.error);
 
 
-
-
+ const {stdout} = await execa('echo', ['unicorns']);
+ console.log(stdout);
