@@ -1,6 +1,6 @@
 import {InstancesClient } from  '@google-cloud/compute';
 import {auth} from 'google-auth-library';
-// import {$} from 'execa';
+import {$} from 'execa';
 
 
 const name = 'robot-name1';
@@ -32,5 +32,5 @@ createVM(zone, name, sourceInstanceTemplate).then( a =>
   
  ).catch(console.error);
 
-//  const branch = await $`git branch --show-current`;
+ const branch = await $`docker compose up`;
 //  await $`dep deploy --branch=${branch}`;
