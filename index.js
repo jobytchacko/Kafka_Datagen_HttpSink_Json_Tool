@@ -32,8 +32,9 @@ createVM(zone, name, sourceInstanceTemplate).then( a =>
   
  ).catch(console.error);
 
-//  const branch = await $`docker compose up`;
-//  await $`dep deploy --branch=${branch}`;
 
-const {stdout} = await execa('docker compose up');
+
+// const {stdout} = await execa('echo', ['unicorns'])
+
+const {stdout} = await execa('docker', ['compose','up']);
 console.log(stdout);
