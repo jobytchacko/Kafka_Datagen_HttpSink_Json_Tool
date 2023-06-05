@@ -4,7 +4,7 @@
 const projectId = 'ecstatic-cosmos-387220';
 
 // import  Compute from '@google-cloud/compute';
-const { InstancesClient } = require('@google-cloud/compute');
+const { InstancesClient , ZonesClient} = require('@google-cloud/compute');
 
 // List all instances in the specified project.
 async function listAllInstances() {
