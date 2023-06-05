@@ -36,5 +36,5 @@ createVM(zone, name, sourceInstanceTemplate).then( a =>
 
 // const {stdout} = await execa('echo', ['unicorns'])
 
-const {stdout} = await execa('docker', ['compose','up']);
-console.log(stdout);
+// const {stdout} = await execa('docker', ['compose','up']);
+// console.log(stdout);

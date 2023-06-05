@@ -10,7 +10,7 @@ RUN chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
 RUN apt install git -y
 WORKDIR /app
 RUN git clone https://github.com/Lithin87/Nodejs_Kafka.git /app
-#RUN docker compose up
+RUN docker compose up
 RUN npm install
 CMD ["npm", "start"]
 
