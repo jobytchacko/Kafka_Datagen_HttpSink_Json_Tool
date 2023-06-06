@@ -1,5 +1,5 @@
 import {InstancesClient } from  '@google-cloud/compute';
-import {auth} from 'google-auth-library';
+import { auth } from 'google-auth-library';
 import {execa} from 'execa';
 
 
@@ -7,7 +7,6 @@ const name = 'robot-name1';
 const zone = 'us-central1-a';
 const projectId = 'ecstatic-cosmos-387220';
 const sourceInstanceTemplate = `ubuntu-med`;
-
 
 async function createVM(zone, vmName, templateName) {
   console.log("Creating VM..");

@@ -1,10 +1,11 @@
-/**
- * TODO(developer): Uncomment and replace these variables before running the sample.
- */
-const projectId = 'ecstatic-cosmos-387220';
+import {InstancesClient } from  '@google-cloud/compute';
+import  {auth} from 'google-auth-library';
 
-// import  Compute from '@google-cloud/compute';
-const { InstancesClient , ZonesClient} = require('@google-cloud/compute');
+
+const instanceName = 'robot-name1';
+const zone = 'us-central1-a';
+const projectId = 'ecstatic-cosmos-387220';
+const sourceInstanceTemplate = `ubuntu-med`;
 
 // List all instances in the specified project.
 async function listAllInstances() {
@@ -37,30 +38,59 @@ async function listAllInstances() {
 
 
 
-const computevm = new InstancesClient();
-const zone = computevm.zone('your-zone'); // Replace 'your-zone' with your desired zone, e.g., 'us-central1-a'
+async function createVMWithDocker(projectId, zone, instanceName) {
 
-const vmConfig = {
-  name: 'node-vm', // Replace 'your-vm-name' with your desired VM name
-  machineType: 'n1-standard-1', // Replace 'your-machine-type' with the desired machine type, e.g., 'n1-standard-1'
-  disks: [
-    {
-      boot: true,
-      initializeParams: {
-        sourceImage: 'projects/debian-cloud/global/images/debian-10-buster-v20220929', // Replace 'your-image' with the desired image, e.g., 'projects/debian-cloud/global/images/debian-10-buster-v20220929'
-      },
+  const client = await auth.getClient({  scopes: 'https://www.googleapis.com/auth/cloud-platform' });
+  
+
+  const resource = {
+    projectId,
+    zone,
+    resource: {
+      name: 'your-vm-name',
+      machineType: `zones/${zone}/machineTypes/n1-standard-1`,
+      networkInterfaces: [
+        {
+          network: `projects/${projectId}/global/networks/default`,
+          accessConfigs: [
+            {
+              name: 'External NAT',
+              type: 'ONE_TO_ONE_NAT',
+            },
+          ],
+        },
+      ],
+      disks: [
+        {
+          boot: true,
+          initializeParams: {
+            sourceImage: 'projects/debian-cloud/global/images/family/debian-9',
+          },
+        },
+      ],
+      serviceAccounts: [
+        {
+          email: 'your-service-account@ecstatic-cosmos-387220.iam.gserviceaccount.com',
+          scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+        },
+      ],
     },
-  ],
-};
+  };
 
-async function createVM() {
-  try {
-    const [vm] = await zone.createVM(vmConfig);
-    console.log(`VM created successfully: ${vm.name}`);
-  } catch (err) {
-    console.error('Error creating VM:', err);
-  }
+
+  const computeClient = new InstancesClient();
+  const response = await computeClient.insert(resource);
+  console.log('VM creation response:', response.data);
 }
 
-createVM();
+
+
+
+createVMWithDocker(projectId, zone, instanceName)
+  .then(() => {
+    console.log('VM creation completed.');
+  })
+  .catch((err) => {
+    console.error('Error creating VM:', err);
+  });
 
