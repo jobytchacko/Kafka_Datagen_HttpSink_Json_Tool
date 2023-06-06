@@ -2,7 +2,7 @@ import {InstancesClient } from  '@google-cloud/compute';
 import  {auth} from 'google-auth-library';
 
 
-const instanceName = 'robot-name1';
+const instanceName = 'robot-name5';
 const zone = 'us-central1-a';
 const projectId = 'ecstatic-cosmos-387220';
 const sourceInstanceTemplate = `ubuntu-med`;
@@ -43,38 +43,56 @@ async function createVMWithDocker(projectId, zone, instanceName) {
   const client = await auth.getClient({  scopes: 'https://www.googleapis.com/auth/cloud-platform' });
   
 
-  const resource = {
+  const request = {
     projectId,
     zone,
     resource: {
-      name: 'your-vm-name',
+      name: instanceName,
       machineType: `zones/${zone}/machineTypes/n1-standard-1`,
+      disks: [
+        {
+          initializeParams: {
+            sourceImage:
+              'projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts',
+          },
+          boot: true,
+          autoDelete: true,
+        },
+      ],
       networkInterfaces: [
         {
-          network: `projects/${projectId}/global/networks/default`,
+          network: 'global/networks/default',
           accessConfigs: [
             {
               name: 'External NAT',
-              type: 'ONE_TO_ONE_NAT',
-            },
-          ],
-        },
+              type: 'ONE_TO_ONE_NAT'
+            }
+          ]
+        }
       ],
-      disks: [
-        {
-          boot: true,
-          initializeParams: {
-            sourceImage: 'projects/debian-cloud/global/images/family/debian-9',
+      metadata: {
+        items: [
+          {
+            key: 'startup-script',
+            value: `
+              #!/bin/bash
+              apt-get update
+              apt-get install -y docker.io
+              sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+              sudo usermod -aG docker $USER
+              sudo service docker start
+            `,
           },
-        },
-      ],
+        ],
+      },
       serviceAccounts: [
         {
-          email: 'your-service-account@ecstatic-cosmos-387220.iam.gserviceaccount.com',
-          scopes: ['https://www.googleapis.com/auth/cloud-platform'],
-        },
-      ],
-    },
+          email: 'default',
+          scopes: ['https://www.googleapis.com/auth/cloud-platform']
+        }
+      ]
+    }
   };
 
 
