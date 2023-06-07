@@ -14,8 +14,10 @@
     "@google-cloud/compute": "^3.9.1",
     "@google-cloud/storage": "^6.10.1",
     "execa": "^7.1.1",
+    "gaxios": "^5.1.0",
     "ip": "^1.1.8",
     "kafkajs": "^2.2.4",
+    "nodemon": "^2.0.22",
     "properties-reader": "^2.2.0"
   }
 }
