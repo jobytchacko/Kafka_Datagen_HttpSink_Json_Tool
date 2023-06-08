@@ -1,6 +1,6 @@
 import gaxios, { request } from 'gaxios';
 import Kafka from 'node-rdkafka';
-import readline from 'readline';
+
 
 const adminClient = Kafka.AdminClient.create({
   'client.id': 'kafka-admin',
@@ -8,12 +8,6 @@ const adminClient = Kafka.AdminClient.create({
   'socket.timeout.ms': 5000, 
 });
 
-
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
 
 
 
@@ -51,64 +45,17 @@ let file_schema = JSON.stringify({
 
 
 
-// Define an array of questions
-const questions = [
-  'Get a list of all connector plugins',
-  'Delete all the connector',
-  'Create a connector based on template',
-  'Validate a connector config',
-  'Create a connector based on Regex Avro',
-  'Delete all the topics'
-];
-
-// Function to print numbered questions
-function printNumberedQuestions(questions) {
-  questions.forEach((question, index) => {
-    const questionNumber = index + 1;
-    console.log(`${questionNumber}. ${question}`);
-  });
-}
-
-// Call the function to print the numbered questions
-printNumberedQuestions(questions);
+// Example request objects
+const request1 =  request({ url: '/connector-plugins' }).then((response) => console.log(response.data));
+const request2 = { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+const request3 = { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+const request4 = { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+const request5 = { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+const request6 = { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 
 
-rl.question('Enter the index of the numbered question: ', (answer) => {
-  const index = parseInt(answer, 10);
-
-  switch (index) {
-    case 1:
-      request({ url: '/connector-plugins' }).then((response) => console.log(response.data));
-      break;
-    case 2:
-      request({ url: '/connectors' }).then((response) => {
-        response.data.forEach((element) => {
-          request({ url: `/connectors/${element}`, method: 'delete' }).then(console.log(element+ " : DELETED"));
-        });
-      });
-      break;
-    case 3:
-      request({ url: '/connectors', data: pre_template, method: 'post' }).then((response) => console.log(response.data));
-      break;
-    case 4:
-      request({ url: '/connector-plugins/DatagenConnector/config/validate', data: pre_template, method: 'put' }).then((response) => console.log(response.data));
-    case 5:
-      request({ url: '/connectors', data: file_schema, method: 'post' }).then((response) => console.log(response.data));
-      break;
-    case 6:
-      adminClient.connect();
-      adminClient.deleteTopic("Template_Schema", 10000, a => console.log("Template_Schema : NOT DELETED : "+a))   ;
-      adminClient.deleteTopic("Regex_Schema", a => console.log("Regex_Schema : NOT DELETED : "+a))   ;
-      adminClient.disconnect();
-      break;
-    default:
-      console.log('Invalid index');
-      break;
-  }
-
-  rl.close();
-});
-
+// You can also store requests directly when creating the array
+export const requests = [request1, request2, request3];
 
 
 
