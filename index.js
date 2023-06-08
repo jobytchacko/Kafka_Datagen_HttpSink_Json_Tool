@@ -52,7 +52,8 @@ async function createInstance() {
               sudo chmod +x /usr/local/bin/docker-compose
               sudo git clone https://github.com/Lithin87/Nodejs_Kafka.git /home/ravindcable4/app 
               sudo mv /home/ravindcable4/app/docker-compose.yml /home/ravindcable4/docker-compose.yml
-              #sudo docker-compose up
+              sudo cd /home/ravindcable4
+              sudo docker-compose up -d
             `,
           },
         ],
