@@ -1,6 +1,6 @@
-import gaxios, { request } from 'gaxios';
+import gaxios , {request} from 'gaxios';
 import Kafka from 'node-rdkafka';
-
+import {  getIPAddress } from  './VM_Manager.js';
 
 const adminClient = Kafka.AdminClient.create({
   'client.id': 'kafka-admin',
@@ -8,16 +8,13 @@ const adminClient = Kafka.AdminClient.create({
   'socket.timeout.ms': 5000, 
 });
 
-
-
-
-const kafkaRestBaseUrl = 'http://104.197.189.100:8082';
+ 
+  
 
 gaxios.instance.defaults = {
-  baseURL: 'http://104.197.189.100:8083',
   headers: {
     'Content-Type': 'application/json',
-    'Accept': ['application/json', 'json']
+    'Accept': ['application/json']
   }
 }
 
@@ -46,16 +43,28 @@ let file_schema = JSON.stringify({
 
 
 // Example request objects
-const request1 =  request({ url: '/connector-plugins' }).then((response) => console.log(response.data));
-const request2 = { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
-const request3 = { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
-const request4 = { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
-const request5 = { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
-const request6 = { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+const request1 = () => {getIPAddressURL().then(a => {  request({ url: a[0]+'/connector-plugins' }).then((response) => console.log("OPTION 3"+ response.data));         });      }
+// const request2 = () =>  { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+// const request3 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+// const request4 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+// const request5 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+// const request6 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 
 
-// You can also store requests directly when creating the array
-export const requests = [request1, request2, request3];
+const requests = [request1];
+
+
+async function getIPAddressURL() {
+  const ipAddress = await getIPAddress();
+  const ConnectorBaseUrl = 'http://' + ipAddress + ':8083';
+  const RestBaseUrl = 'http://' + ipAddress + ':8082';
+  return ConnectorBaseUrl,RestBaseUrl;
+}
+
+export function selector(index)
+{
+  return requests[index];
+}
 
 
 

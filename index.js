@@ -1,5 +1,5 @@
 import { createInstance, deleteInstance, getIPAddress } from  './VM_Manager.js';
-import {requests} from './Kafka_Request.js';
+import {selector} from './Kafka_Request.js';
 import readline from 'readline';
 
 const rl = readline.createInterface({
@@ -35,13 +35,13 @@ const questions = [
   
     switch (index) {
         case 1:
-           createInstance();
+           createInstance().catch(e => console.log(e));
             break;
         case 2:
             deleteInstance();
             break;
         case 3:
-            requests[0]
+            selector(0)();
             break;
         case 4:
             request({ url: '/connectors' }).then((response) => {

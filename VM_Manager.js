@@ -1,18 +1,20 @@
-import {InstancesClient , ZoneOperationsClient } from  '@google-cloud/compute';
-import  {auth} from 'google-auth-library';
+import { InstancesClient, ZoneOperationsClient } from '@google-cloud/compute';
+import { auth } from 'google-auth-library';
 
 const project = 'ecstatic-cosmos-387220';
 const zone = 'us-central1-a'
-const instanceName = 'Kafka_VM'
+const instanceName = 'kafkavm1'
 const machineType = 'e2-standard-2';
 const sourceImage = 'projects/debian-cloud/global/images/family/debian-11';
 
-const authClient = await auth.getClient({  scopes: 'https://www.googleapis.com/auth/cloud-platform' });
+process.env.GOOGLE_APPLICATION_CREDENTIALS = 'gcloud.json';
+const authClient = await auth.getClient({ scopes: 'https://www.googleapis.com/auth/cloud-platform' });
 const instancesClient = new InstancesClient();
 
- export async function createInstance() {
 
-  console.log(`Creating the ${instanceName} instance in ${zone}...`);
+export async function createInstance() {
+
+  console.log(`\n\nCreating =>\nINSTANCE : ${instanceName} \nZONE     : ${zone}`);
 
   const [response] = await instancesClient.insert({
     instanceResource: {
@@ -37,7 +39,16 @@ const instancesClient = new InstancesClient();
               name: 'External NAT',
               type: 'ONE_TO_ONE_NAT'
             }
-          ]
+          ],
+          tags: ['http-server', 'https-server'],
+          metadata: {
+            items: [
+              {
+                key: 'google-logging-enabled',
+                value: 'true'
+              }
+            ]
+          }
         }
       ],
       metadata: {
@@ -63,7 +74,6 @@ const instancesClient = new InstancesClient();
     zone,
   });
 
-  console.log(response);
   let operation = response.latestResponse;
   const operationsClient = new ZoneOperationsClient();
 
@@ -82,12 +92,12 @@ const instancesClient = new InstancesClient();
 
 
 export async function deleteInstance() {
-    const [response] = await instancesClient.delete({
-        auth: authClient,
-        project,
-        zone,
-        instance: instanceName
-    }).then( console.log("VM Deleted : "+instanceName));
+  const [response] = await instancesClient.delete({
+    auth: authClient,
+    project,
+    zone,
+    instance: instanceName
+  }).then(console.log("VM Deleted : " + instanceName));
 }
 
 
@@ -95,22 +105,9 @@ export async function deleteInstance() {
 export async function getIPAddress() {
   console.log("Getting IP Address..");
   const computeClient = new InstancesClient();
-  const the_compute_instance = await computeClient.get({instance: instanceName, project , zone: zone});
-  const connection = await the_compute_instance[0];
-  console.log(connection.name);
-  return the_compute_instance[0]["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
-
+  const instances = await computeClient.get({ instance: instanceName, project, zone: zone });
+  const instance = await the_compute_instances[0];
+  return instances[0]["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
 }
-
-
-// getIPAddress().then(a => console.log(a));
-
-
-// module.exports = {
-//     deleteInstance,
-//     createInstance,
-//     getIPAddress
-//   };
-
 
 
