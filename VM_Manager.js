@@ -4,7 +4,7 @@ import { auth } from 'google-auth-library';
 const project = 'ecstatic-cosmos-387220';
 const zone = 'us-central1-a'
 const instanceName = 'kafkavm'
-const machineType = 'e2-standard-2';
+const machineType = 'e2-standard-4';
 const sourceImage = 'projects/debian-cloud/global/images/family/debian-11';
 
 process.env.GOOGLE_APPLICATION_CREDENTIALS = 'gcloud.json';
@@ -27,7 +27,7 @@ export async function createInstance() {
           },
           autoDelete: true,
           boot: true,
-          type: 'SSD',
+          type: 'pd-ssd',
         },
       ],
       machineType: `zones/${zone}/machineTypes/${machineType}`,
@@ -41,14 +41,6 @@ export async function createInstance() {
             }
           ],
           tags: ['http-server', 'https-server'],
-          metadata: {
-            items: [
-              {
-                key: 'google-logging-enabled',
-                value: 'true'
-              }
-            ]
-          }
         }
       ],
       metadata: {
@@ -57,13 +49,11 @@ export async function createInstance() {
             key: 'startup-script',
             value: `
               #!/bin/bash
-              apt update
               apt install -y docker.io
               curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
               git clone https://github.com/Lithin87/Nodejs_Kafka.git /home/ravindcable4/app 
-              mv /home/ravindcable4/app/docker-compose.yml /home/ravindcable4/docker-compose.yml
-              cd /home/ravindcable4 && docker-compose up -d
+              cd /home/ravindcable4/app && docker-compose up -d
             `,
           },
         ],
