@@ -3,7 +3,7 @@ import { auth } from 'google-auth-library';
 
 const project = 'ecstatic-cosmos-387220';
 const zone = 'us-central1-a'
-const instanceName = 'kafkavm1'
+const instanceName = 'kafkavm'
 const machineType = 'e2-standard-2';
 const sourceImage = 'projects/debian-cloud/global/images/family/debian-11';
 
@@ -106,7 +106,6 @@ export async function getIPAddress() {
   console.log("Getting IP Address..");
   const computeClient = new InstancesClient();
   const instances = await computeClient.get({ instance: instanceName, project, zone: zone });
-  const instance = await the_compute_instances[0];
   return instances[0]["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
 }
 

@@ -43,7 +43,7 @@ let file_schema = JSON.stringify({
 
 
 // Example request objects
-const request1 = () => {getIPAddressURL().then(a => {  request({ url: a[0]+'/connector-plugins' }).then((response) => console.log("OPTION 3"+ response.data));         });      }
+const request1 = () => {getIPAddressURL().then(a => {  request({ url: a+'/connector-plugins' }).then((response) => console.dir(response.data, { depth : null}));     });      }
 // const request2 = () =>  { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 // const request3 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 // const request4 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
@@ -58,7 +58,7 @@ async function getIPAddressURL() {
   const ipAddress = await getIPAddress();
   const ConnectorBaseUrl = 'http://' + ipAddress + ':8083';
   const RestBaseUrl = 'http://' + ipAddress + ':8082';
-  return ConnectorBaseUrl,RestBaseUrl;
+  return ConnectorBaseUrl;
 }
 
 export function selector(index)
