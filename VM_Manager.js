@@ -57,13 +57,13 @@ export async function createInstance() {
             key: 'startup-script',
             value: `
               #!/bin/bash
-              sudo apt update
-              sudo apt install -y docker.io
-              sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-              sudo chmod +x /usr/local/bin/docker-compose
-              sudo git clone https://github.com/Lithin87/Nodejs_Kafka.git /home/ravindcable4/app 
-              sudo mv /home/ravindcable4/app/docker-compose.yml /home/ravindcable4/docker-compose.yml
-              sudo cd /home/ravindcable4 && docker-compose up -d
+              apt update
+              apt install -y docker.io
+              curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              chmod +x /usr/local/bin/docker-compose
+              git clone https://github.com/Lithin87/Nodejs_Kafka.git /home/ravindcable4/app 
+              mv /home/ravindcable4/app/docker-compose.yml /home/ravindcable4/docker-compose.yml
+              cd /home/ravindcable4 && docker-compose up -d
             `,
           },
         ],
