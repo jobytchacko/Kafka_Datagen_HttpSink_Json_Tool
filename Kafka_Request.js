@@ -1,4 +1,5 @@
 import gaxios , {request} from 'gaxios';
+import jp from 'jsonpath';
 import Kafka from 'node-rdkafka';
 import {  getIPAddress } from  './VM_Manager.js';
 
@@ -40,18 +41,32 @@ let file_schema = JSON.stringify({
   }
 });
 
+let ConnectorBaseUrl;
+
+const  del_connectors = (a) => { request({ url: a+'/connectors' }).then((response) => {
+  if ( response.data.length  == 0)
+  {console.log("No Connectors present")}
+  else{
+  response.data.forEach((element) => {
+      request({ url: a+`/connectors/${element}`, method: 'delete' }).then(console.log(element + " : DELETED"));
+  })}
+})}
 
 
 // Example request objects
-const request1 = () => {getIPAddressURL().then(a => {  request({ url: a+'/connector-plugins' }).then((response) => console.dir(response.data, { depth : null}));     });      }
-// const request2 = () =>  { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
-// const request3 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+const request1 = () => {getIPAddressURL().then(a => { request({ url: a+'/connector-plugins' }).then(printScreenData)  })}
+const request2 = () => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: pre_template }).then(printScreenData).catch(printScreen) })}
+const request3 = () => {getIPAddressURL().then(a => { del_connectors(a) }   )}
+const request4 = () => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: file_schema }).then(printScreenData).catch(printScreen) })}
 // const request4 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 // const request5 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 // const request6 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+// const request7 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+// const request8 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 
 
-const requests = [request1];
+
+const requests = [request1, request2, request3, request4];
 
 
 async function getIPAddressURL() {
@@ -60,6 +75,9 @@ async function getIPAddressURL() {
   const RestBaseUrl = 'http://' + ipAddress + ':8082';
   return ConnectorBaseUrl;
 }
+
+const printScreen = (response) => {      console.dir(jp.query(response, "$..response.data.message"))  }
+const printScreenData = (response) => console.dir(response.data, { depth : null})  
 
 export function selector(index)
 {

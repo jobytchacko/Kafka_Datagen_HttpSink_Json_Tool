@@ -10,13 +10,13 @@ const rl = readline.createInterface({
 
 const questions = [
     'Create a VM',
-    'Delete a VM',
     'Get a list of all connector plugins',
-    'Delete all the connector',
     'Create a connector based on template',
-    'Validate a connector config',
     'Create a connector based on Regex Avro',
-    'Delete all the topics'
+    'Validate a connector config',
+    'Delete a VM',
+    'Delete all the topics',
+    'Delete all the connector',
   ];
   
   // Function to print numbered questions
@@ -38,31 +38,34 @@ const questions = [
            createInstance().catch(e => console.log(e));
             break;
         case 2:
-            deleteInstance();
+           selector(0)();
             break;
         case 3:
-            selector(0)();
+            selector(1)();
             break;
         case 4:
-            request({ url: '/connectors' }).then((response) => {
-                response.data.forEach((element) => {
-                    request({ url: `/connectors/${element}`, method: 'delete' }).then(console.log(element + " : DELETED"));
-                });
-            });
+            selector(3)();
+            // request({ url: '/connectors', data: file_schema, method: 'post' }).then((response) => console.log(response.data));
             break;
         case 5:
-            request({ url: '/connectors', data: pre_template, method: 'post' }).then((response) => console.log(response.data));
+            // selector(3)();
+            request({ url: '/connector-plugins/DatagenConnector/config/validate', data: pre_template, method: 'put' }).then((response) => console.log(response.data));
             break;
         case 6:
-            request({ url: '/connector-plugins/DatagenConnector/config/validate', data: pre_template, method: 'put' }).then((response) => console.log(response.data));
+            deleteInstance();
         case 7:
-            request({ url: '/connectors', data: file_schema, method: 'post' }).then((response) => console.log(response.data));
-            break;
-        case 8:
             adminClient.connect();
             adminClient.deleteTopic("Template_Schema", 10000, a => console.log("Template_Schema : NOT DELETED : " + a));
             adminClient.deleteTopic("Regex_Schema", a => console.log("Regex_Schema : NOT DELETED : " + a));
             adminClient.disconnect();
+            break;
+        case 8:
+            selector(2)();
+            // request({ url: '/connectors' }).then((response) => {
+            //     response.data.forEach((element) => {
+            //         request({ url: `/connectors/${element}`, method: 'delete' }).then(console.log(element + " : DELETED"));
+            //     });
+            // });
             break;
         default:
             console.log('Invalid index');

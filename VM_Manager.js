@@ -91,7 +91,6 @@ export async function deleteInstance() {
 }
 
 
-
 export async function getIPAddress() {
   console.log("Getting IP Address..");
   const computeClient = new InstancesClient();
