@@ -2,6 +2,7 @@ import gaxios , {request} from 'gaxios';
 import jp from 'jsonpath';
 import Kafka from 'node-rdkafka';
 import {  getIPAddress } from  './VM_Manager.js';
+import inquirer  from 'inquirer';
 
 const adminClient = Kafka.AdminClient.create({
   'client.id': 'kafka-admin',
@@ -54,38 +55,61 @@ const  del_connectors = (a) => { request({ url: a+'/connectors' }).then((respons
 
 
 // Example request objects
-const request1 = () => {getIPAddressURL().then(a => { request({ url: a+'/connector-plugins' }).then(printScreenData)  })}
-const request2 = () => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: pre_template }).then(printScreenData).catch(printScreen) })}
-const request3 = () => {getIPAddressURL().then(a => { del_connectors(a) }   )}
-const request4 = () => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: file_schema }).then(printScreenData).catch(printScreen) })}
-// const request4 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
-// const request5 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+const req0 = () => {getIPAddressURL().then(a => { request({ url: a+'/connector-plugins' }).then(printData)  })}
+const req1 = () => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: pre_template }).then(printData).catch(printError) })}
+const req2 = () => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: file_schema }).then(printData).catch(printError) })}
+const req3 = () => {getIPAddressURL().then(a => { del_connectors(a) }   )}
+const req4 = (a) => {getIPAddressURL().then(a => { request({ url: '/connector-plugins/DatagenConnector/config/validate', data: a, method: 'put' }).then((res) => console.log(res.data)).catch(printError) })}
+const req5 =  () => {  getUserInput().then(console.log("sdsd") ) };
 // const request6 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 // const request7 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 // const request8 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 
+;
 
-
-const requests = [request1, request2, request3, request4];
+export const requests = [req0, req1, req2, req3,req4, req5];
 
 
 async function getIPAddressURL() {
   const ipAddress = await getIPAddress();
   const ConnectorBaseUrl = 'http://' + ipAddress + ':8083';
   const RestBaseUrl = 'http://' + ipAddress + ':8082';
+  console.log(ConnectorBaseUrl)
   return ConnectorBaseUrl;
 }
 
-const printScreen = (response) => {      console.dir(jp.query(response, "$..response.data.message"))  }
-const printScreenData = (response) => console.dir(response.data, { depth : null})  
+const printError = (response) => { 
+    console.log(response);
+    let msg = jp.query(response, "$..response.data.message");
+   if( msg.length != 0) 
+      console.dir(msg)
+      else
+      console.log("Containers aren't up..Either start the containers or Wait")}
 
-export function selector(index)
-{
-  return requests[index];
-}
+const printData = (response) => { 
+     console.log(jp.query(response, "$..statusText",1)) ; 
+//  console.dir(JSON.stringify(response), { depth : null}) 
+ }
 
 
-
+ async function getUserInput() {
+    const questions = [
+        {
+            type: 'input',
+            name: 'name',
+            message: 'What is your name?'
+          }
+    ];
+  
+    try {
+      const answers = await inquirer.prompt(questions);
+      console.log('Answers:', answers);
+  
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
 
 
 

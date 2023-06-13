@@ -1,6 +1,8 @@
 import { createInstance, deleteInstance, getIPAddress } from  './VM_Manager.js';
-import {selector} from './Kafka_Request.js';
+import {requests} from './Kafka_Request.js';
 import readline from 'readline';
+import { stdin as input, stdout as output } from 'node:process';
+
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -38,18 +40,19 @@ const questions = [
            createInstance().catch(e => console.log(e));
             break;
         case 2:
-           selector(0)();
+            requests[0]();
             break;
         case 3:
-            selector(1)();
+            requests[1]();
             break;
         case 4:
-            selector(3)();
-            // request({ url: '/connectors', data: file_schema, method: 'post' }).then((response) => console.log(response.data));
+            requests[2]();
             break;
         case 5:
-            // selector(3)();
-            request({ url: '/connector-plugins/DatagenConnector/config/validate', data: pre_template, method: 'put' }).then((response) => console.log(response.data));
+              requests[5]();
+
+            // request({ url: '/connector-plugins/DatagenConnector/config/validate', data: pre_template, method: 'put' }).then((response) => console.log(response.data));
+            
             break;
         case 6:
             deleteInstance();
@@ -60,12 +63,7 @@ const questions = [
             adminClient.disconnect();
             break;
         case 8:
-            selector(2)();
-            // request({ url: '/connectors' }).then((response) => {
-            //     response.data.forEach((element) => {
-            //         request({ url: `/connectors/${element}`, method: 'delete' }).then(console.log(element + " : DELETED"));
-            //     });
-            // });
+            requests[3]();
             break;
         default:
             console.log('Invalid index');
