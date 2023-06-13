@@ -2,7 +2,8 @@ import gaxios , {request} from 'gaxios';
 import jp from 'jsonpath';
 import Kafka from 'node-rdkafka';
 import {  getIPAddress } from  './VM_Manager.js';
-import inquirer  from 'inquirer';
+
+
 
 const adminClient = Kafka.AdminClient.create({
   'client.id': 'kafka-admin',
@@ -12,7 +13,6 @@ const adminClient = Kafka.AdminClient.create({
 
  
   
-
 gaxios.instance.defaults = {
   headers: {
     'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const req1 = () => {getIPAddressURL().then(a => { request({ url: a+'/connectors'
 const req2 = () => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: file_schema }).then(printData).catch(printError) })}
 const req3 = () => {getIPAddressURL().then(a => { del_connectors(a) }   )}
 const req4 = (a) => {getIPAddressURL().then(a => { request({ url: '/connector-plugins/DatagenConnector/config/validate', data: a, method: 'put' }).then((res) => console.log(res.data)).catch(printError) })}
-const req5 =  () => {  getUserInput().then(console.log("sdsd") ) };
+const req5 =  () => {   getUserInput().then(printData).catch(printError) };
 // const request6 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 // const request7 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 // const request8 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
@@ -92,23 +92,7 @@ const printData = (response) => {
  }
 
 
- async function getUserInput() {
-    const questions = [
-        {
-            type: 'input',
-            name: 'name',
-            message: 'What is your name?'
-          }
-    ];
-  
-    try {
-      const answers = await inquirer.prompt(questions);
-      console.log('Answers:', answers);
-  
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
+
   
 
 
