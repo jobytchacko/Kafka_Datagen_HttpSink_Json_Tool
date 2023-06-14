@@ -1,5 +1,5 @@
-import {requests} from './Kafka_Request.js';
-import { createInstance, deleteInstance, getIPAddress } from  './VM_Manager.js';
+import { requests } from './Kafka_Request.js';
+import { createInstance, deleteInstance, getIPAddress } from './VM_Manager.js';
 
 
 export const question_display = () => {
@@ -13,7 +13,7 @@ export const question_display = () => {
         'Delete all the topics',
         'Delete all the connector',
     ];
-    
+
     // Function to print numbered questions
     function printNumberedQuestions(questions) {
         questions.forEach((question, index) => {
@@ -21,18 +21,18 @@ export const question_display = () => {
             console.log(`${questionNumber}. ${question}`);
         });
     }
-    
+
     printNumberedQuestions(questions);
 
 }
 
-export const menu_question = (answer) => {
+export const menu_question = (answer, schema) => {
 
-   
+    // console.log("----jjj"+schema);
 
     const index = parseInt(answer, 10);
 
-console.log(index);
+    console.log(index);
 
     switch (index) {
         case 1:
@@ -48,26 +48,7 @@ console.log(index);
             requests[2]();
             break;
         case 5:
-
-            // async function getUserInput() {
-
-            // rl1.question('Enter t question: ', (answer) => {  console.log('Command-line input received:') });
-
-            // prompt.start();
-            //  prompt.get(['username', 'email'], function (err, result) {
-
-            //   console.log('Command-line input received:');
-            //   console.log('  username: ' + result.username);
-            //   console.log('  email: ' + result.email);
-            // });
-            //  wait(9);
-
-            // }
-
-            //   requests[5]();
-
-            // request({ url: '/connector-plugins/DatagenConnector/config/validate', data: pre_template, method: 'put' }).then((response) => console.log(response.data));
-
+            requests[4](schema);
             break;
         case 6:
             deleteInstance();

@@ -42,6 +42,13 @@ let file_schema = JSON.stringify({
   }
 });
 
+const path = '$.address.city';
+const newValue = 'San Francisco';
+
+
+
+const schema_replace = (schema) => {  if( schema != null) { jp.value(file_schema, '$.config.schema.string', schema) }  return file_schema}
+
 let ConnectorBaseUrl;
 
 const  del_connectors = (a) => { request({ url: a+'/connectors' }).then((response) => {
@@ -56,10 +63,10 @@ const  del_connectors = (a) => { request({ url: a+'/connectors' }).then((respons
 
 // Example request objects
 const req0 = () => {getIPAddressURL().then(a => { request({ url: a+'/connector-plugins' }).then(printData)  })}
-const req1 = () => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: pre_template }).then(printData).catch(printError) })}
-const req2 = () => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: file_schema }).then(printData).catch(printError) })}
+const req1 = (schema) => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: pre_template }).then(printData).catch(printError) })}
+const req2 = (schema) => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: schema_replace(schema) }).then(printData).catch(printError) })}
 const req3 = () => {getIPAddressURL().then(a => { del_connectors(a) }   )}
-const req4 = (a) => {getIPAddressURL().then(a => { request({ url: '/connector-plugins/DatagenConnector/config/validate', data: a, method: 'put' }).then((res) => console.log(res.data)).catch(printError) })}
+const req4 = (schema) => {getIPAddressURL().then(a => { request({ url: '/connector-plugins/DatagenConnector/config/validate', data: schema, method: 'put' }).then((res) => console.log(res.data)).catch(printError) })}
 const req5 =  () => {   getUserInput().then(printData).catch(printError) };
 // const request6 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 // const request7 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };

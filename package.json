@@ -2,10 +2,10 @@
   "name": "kafka_node",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/CLI.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
+    "start": "node src/CLI.js",
     "vm": "node VM_Manager.js"
   },
   "author": "",

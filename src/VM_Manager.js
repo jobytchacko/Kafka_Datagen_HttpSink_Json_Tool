@@ -52,8 +52,8 @@ export async function createInstance() {
               apt install -y docker.io
               curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
-              git clone https://github.com/Lithin87/Nodejs_Kafka.git /home/ravindcable4/app 
-              cd /home/ravindcable4/app && docker-compose up -d
+              git clone https://github.com/Lithin87/Nodejs_Kafka.git /home/ravindcable4/app
+              cd /home/ravindcable4/app/Resources && docker-compose up -d
             `,
           },
         ],

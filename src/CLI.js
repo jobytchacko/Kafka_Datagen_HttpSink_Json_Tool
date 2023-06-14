@@ -15,12 +15,13 @@ async function firstBlock() {
     {
       type: 'input',
       name: 'name1',
-      message: 'Provide File Index : '
+      message: 'Provide File Index : ',
+      when : (answers) => answers.name === '4'
     }
   ])
     .then((answers) => {
       console.log(answers);
-      menu_question(answers.name);
+      menu_question(answers.name, answers.name1);
     })
     .catch((error) => {
       if (error.isTtyError) {
