@@ -2,6 +2,7 @@ import {InstancesClient } from  '@google-cloud/compute';
 import { auth } from 'google-auth-library';
 import {execa} from 'execa';
 import prompt  from 'prompt';
+import lodash from 'lodash';
 
 // const name = 'robot-name1';
 // const zone = 'us-central1-a';
@@ -23,13 +24,27 @@ import prompt  from 'prompt';
 
 
 
-  prompt.start();
+let file_schema = JSON.stringify({
+  "name": "Datagen_file_schema",
+  "config": {
+    "connector.class": "io.confluent.kafka.connect.datagen.DatagenConnector",
+    "name": "Datagen_file_schema",
+    "schema.string": "dffdf",
+    "tasks.max": "1",
+    "kafka.topic": "Regex_Schema"
+  }
+});
+
+// const path = '$.config."schema.string"';
 
 
-  prompt.get(['username', 'email'], function (err, result) {
-  
-    console.log('Command-line input received:');
-    console.log('  username: ' + result.username);
-    console.log('  email: ' + result.email);
-  });
 
+
+
+// const json = '{"first.name": "John", "last.name": "Doe"}';
+const data = JSON.parse(file_schema);
+
+lodash.set(data, ['config', 'schema.string'], 'Jane Smith');
+
+
+console.log(data); // Output: Doe

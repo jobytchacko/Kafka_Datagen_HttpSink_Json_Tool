@@ -2,7 +2,7 @@ import gaxios , {request} from 'gaxios';
 import jp from 'jsonpath';
 import Kafka from 'node-rdkafka';
 import {  getIPAddress } from  './VM_Manager.js';
-
+import ld from 'lodash';
 
 
 const adminClient = Kafka.AdminClient.create({
@@ -42,12 +42,15 @@ let file_schema = JSON.stringify({
   }
 });
 
-const path = '$.address.city';
-const newValue = 'San Francisco';
+// const path = '$.address.city';
+// const newValue = 'San Francisco';
 
 
 
-const schema_replace = (schema) => {  if( schema != null) { jp.value(file_schema, '$.config.schema.string', schema) }  return file_schema}
+// lodash.set(data, ['config', 'schema.string'], 'Jane Smith');
+
+
+const schema_replace = (schema) => {  if( schema != null) { file_schema = JSON.parse(file_schema); jp.set(file_schema, ['config', 'schema.string'], schema); console.log(file_schema); }  return file_schema}
 
 let ConnectorBaseUrl;
 
@@ -86,7 +89,7 @@ async function getIPAddressURL() {
 }
 
 const printError = (response) => { 
-    console.log(response);
+    console.log("hii"+response);
     let msg = jp.query(response, "$..response.data.message");
    if( msg.length != 0) 
       console.dir(msg)
