@@ -19,6 +19,8 @@
     "gaxios": "^5.1.0",
     "inquirer": "^9.2.7",
     "ip": "^1.1.8",
+    "json-minify": "^1.0.0",
+    "jsonminify": "^0.4.2",
     "jsonpath": "^1.1.1",
     "kafkajs": "^2.2.4",
     "lodash": "^4.17.21",

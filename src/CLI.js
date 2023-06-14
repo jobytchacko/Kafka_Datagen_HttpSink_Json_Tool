@@ -6,28 +6,33 @@ async function firstBlock() {
 
   question_display();
 
-  inquirer.prompt([
-    {
-      type: 'input',
-      name: 'name',
-      message: 'Select Item Index : '
-    },
-    {
-      type: 'input',
-      name: 'name1',
-      message: 'Provide File Index : ',
-      when : (answers) => answers.name === '4'
-    }
-  ])
-    .then((answers) => {
-      console.log(answers);
-      menu_question(answers.name, answers.name1);
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'index',
+            message: 'Select Item Index : '
+        },
+        {
+            type: 'editor',
+            name: 'schema',
+            message: 'Provide schema : ',
+            when: (ans) => ans.index === '3'
+        },
+        {
+            type: 'editor',
+            name: 'schema',
+            message: 'Provide json : ',
+            when: (ans) => ans.index === '4'
+        },
+    ])
+    .then((ans) => {
+      menu_question(ans.index, ans.schema);
     })
     .catch((error) => {
       if (error.isTtyError) {
-        // Prompt couldn't be rendered in the current environment
-      } else {
-        // Something else went wrong
+        console.log("Prompt couldn't be rendered in the current environment");
+    } else {
+        console.log("Something else went wrong");
       }
     });
 }

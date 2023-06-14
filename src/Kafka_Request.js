@@ -20,7 +20,7 @@ gaxios.instance.defaults = {
   }
 }
 
-let pre_template = JSON.stringify({
+let pre_template = {
   "name": "Datagen_pre_template",
   "config": {
     "connector.class": "io.confluent.kafka.connect.datagen.DatagenConnector",
@@ -29,7 +29,8 @@ let pre_template = JSON.stringify({
     "tasks.max": "1",
     "kafka.topic": "Template_Schema"
   }
-});
+};
+
 
 let file_schema = JSON.stringify({
   "name": "Datagen_file_schema",
@@ -50,7 +51,8 @@ let file_schema = JSON.stringify({
 // lodash.set(data, ['config', 'schema.string'], 'Jane Smith');
 
 
-const schema_replace = (schema) => {  if( schema != null) { file_schema = JSON.parse(file_schema); jp.set(file_schema, ['config', 'schema.string'], schema); console.log(file_schema); }  return file_schema}
+const schema_replace_s = (schema) => { if( schema != "") {   ld.set(pre_template, ['config', 'schema.string'], schema); }  return pre_template}
+const schema_replace_f = (schema) => { if( schema != "") { file_schema = JSON.parse(file_schema); ld.set(file_schema, ['config', 'schema.string'], schema) }  return file_schema}
 
 let ConnectorBaseUrl;
 
@@ -65,9 +67,12 @@ const  del_connectors = (a) => { request({ url: a+'/connectors' }).then((respons
 
 
 // Example request objects
-const req0 = () => {getIPAddressURL().then(a => { request({ url: a+'/connector-plugins' }).then(printData)  })}
-const req1 = (schema) => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: pre_template }).then(printData).catch(printError) })}
-const req2 = (schema) => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: schema_replace(schema) }).then(printData).catch(printError) })}
+const req0 = () => {getIPAddressURL().then(a => { request({ url: a+'/connector-plugins' }).then( printDataFull ) })}
+const req1 = (schema) => {getIPAddressURL().then(a => {
+    pre_template= schema_replace_s(schema) ; 
+    console.log(pre_template);
+      request({ url: a+'/connectors', method: 'POST', data: JSON.stringify(pre_template) }).then(printData).catch(printError) })}
+const req2 = (schema) => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: schema_replace_f(schema) }).then(printData).catch(printError) })}
 const req3 = () => {getIPAddressURL().then(a => { del_connectors(a) }   )}
 const req4 = (schema) => {getIPAddressURL().then(a => { request({ url: '/connector-plugins/DatagenConnector/config/validate', data: schema, method: 'put' }).then((res) => console.log(res.data)).catch(printError) })}
 const req5 =  () => {   getUserInput().then(printData).catch(printError) };
@@ -96,10 +101,9 @@ const printError = (response) => {
       else
       console.log("Containers aren't up..Either start the containers or Wait")}
 
-const printData = (response) => { 
-     console.log(jp.query(response, "$..statusText",1)) ; 
-//  console.dir(JSON.stringify(response), { depth : null}) 
- }
+const printData = (response) => { console.log(jp.query(response, "$..statusText",1))} ;  
+const printDataFull = (response) => { console.log(response.data)} ; 
+
 
 
 

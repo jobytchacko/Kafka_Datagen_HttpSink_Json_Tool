@@ -1,5 +1,6 @@
 import { requests } from './Kafka_Request.js';
-import { createInstance, deleteInstance, getIPAddress } from './VM_Manager.js';
+import { createInstance, deleteInstance } from './VM_Manager.js';
+import df from 'jsonminify';
 
 
 export const question_display = () => {
@@ -28,7 +29,8 @@ export const question_display = () => {
 
 export const menu_question = (answer, schema) => {
 
-    // console.log("----jjj"+schema);
+    const schema_single = df(schema);    
+    console.log("----jjj"+schema_single);
 
     const index = parseInt(answer, 10);
 
@@ -42,13 +44,13 @@ export const menu_question = (answer, schema) => {
             requests[0]();
             break;
         case 3:
-            requests[1]();
+            requests[1](schema_single);
             break;
         case 4:
-            requests[2]();
+            requests[2](schema_single);
             break;
         case 5:
-            requests[4](schema);
+            requests[4](schema_single);
             break;
         case 6:
             deleteInstance();
