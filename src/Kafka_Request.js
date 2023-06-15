@@ -98,7 +98,7 @@ export async function getIPAddressURL() {
 }
 
 const printError = (response) => { 
-    console.log("hii"+response);
+    console.dir(response, { depth : null});
     let msg = jp.query(response, "$..response.data.message");
    if( msg.length != 0) 
       console.dir(msg)

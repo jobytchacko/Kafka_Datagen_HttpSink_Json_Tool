@@ -29,8 +29,9 @@ async function firstBlock() {
         },
     ])
     .then((ans) => {
-        ans.schema 
-        const singleLineJson = JSON.stringify(JSON.parse(ans.schema), null, '');
+        let singleLineJson = "";
+        if(ans.schema != undefined)
+        singleLineJson = JSON.stringify(JSON.parse(ans.schema), null, '');
         console.log(singleLineJson);
         let temp_delay = () => menu_question(ans.index, singleLineJson) 
         ips == "" ? setTimeout(temp_delay, 1000) : temp_delay()
