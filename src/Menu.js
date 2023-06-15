@@ -30,7 +30,7 @@ export const question_display = () => {
 export const menu_question = (answer, schema) => {
 
     const schema_single = df(schema);    
-    // console.log("INPUT : "+schema_single);
+    console.log("IP Address : "+ ips[0].split(':8083')[0]);
 
     const index = parseInt(answer, 10);
 
