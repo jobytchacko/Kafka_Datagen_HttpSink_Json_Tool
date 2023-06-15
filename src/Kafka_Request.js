@@ -5,6 +5,7 @@ import {  getIPAddress } from  './VM_Manager.js';
 import ld from 'lodash';
 
 
+
 const adminClient = Kafka.AdminClient.create({
   'client.id': 'kafka-admin',
   'metadata.broker.list': '104.197.189.100:9101',
@@ -102,7 +103,8 @@ async function getIPAddressURL() {
   const KafkaRestUrl = 'http://' + ipAddress + ':8082';
   const SchemaRegistryUrl = 'http://' + ipAddress + ':8081';
   console.log(" IP Address : "+ConnectorBaseUrl)
-  return [ConnectorBaseUrl,KafkaRestUrl,SchemaRegistryUrl];
+  global.ips = [ConnectorBaseUrl,KafkaRestUrl,SchemaRegistryUrl];
+//   return [ConnectorBaseUrl,KafkaRestUrl,SchemaRegistryUrl];
 }
 
 const printError = (response) => { 

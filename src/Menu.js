@@ -30,7 +30,7 @@ export const question_display = () => {
 export const menu_question = (answer, schema) => {
 
     const schema_single = df(schema);    
-    console.log("----jjj"+schema_single);
+    // console.log("INPUT : "+schema_single);
 
     const index = parseInt(answer, 10);
 
