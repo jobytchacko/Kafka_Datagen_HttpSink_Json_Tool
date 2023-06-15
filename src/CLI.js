@@ -1,6 +1,9 @@
 import { menu_question, question_display } from './Menu.js'
 import inquirer from 'inquirer';
-
+import {  getIPAddressURL } from  './Kafka_Request.js';
+    
+global.ips = "";
+getIPAddressURL();
 
 async function firstBlock() {
 
@@ -26,7 +29,8 @@ async function firstBlock() {
         },
     ])
     .then((ans) => {
-      menu_question(ans.index, ans.schema);
+        let temp_delay = () => menu_question(ans.index, ans.schema) 
+        ips == "" ? setTimeout(temp_delay, 1000) : temp_delay()
     })
     .catch((error) => {
       if (error.isTtyError) {
@@ -38,4 +42,5 @@ async function firstBlock() {
 }
 
 
-firstBlock();
+console.log("WELCOME TO KAFKA DATA GENERATOR");
+setTimeout(firstBlock, 1000);

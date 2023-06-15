@@ -48,7 +48,6 @@ let file_schema = JSON.stringify({
 // const newValue = 'San Francisco';
 
 
-
 // lodash.set(data, ['config', 'schema.string'], 'Jane Smith');
 
 
@@ -75,7 +74,7 @@ const r3 = a => { request({ url: a[0]+'/connectors', method: 'POST', data: JSON.
 
 
 // Example request objects
-const req0 = () => {getIPAddressURL().then(a => r1(a))}
+const req0 = () => {r1(ips)}
 const req1 = async (schema) => { getIPAddressURL().then(a => {
     pre_template= schema_replace_s(schema) ; 
     console.log(pre_template);
@@ -97,13 +96,13 @@ const req5 =  () => {   getUserInput().then(printData).catch(printError) };
 export const requests = [req0, req1, req2, req3,req4, req5];
 
 
-async function getIPAddressURL() {
+export async function getIPAddressURL() {
   const ipAddress = await getIPAddress();
   const ConnectorBaseUrl = 'http://' + ipAddress + ':8083';
   const KafkaRestUrl = 'http://' + ipAddress + ':8082';
   const SchemaRegistryUrl = 'http://' + ipAddress + ':8081';
-  console.log(" IP Address : "+ConnectorBaseUrl)
-  global.ips = [ConnectorBaseUrl,KafkaRestUrl,SchemaRegistryUrl];
+//   console.log(" IP Address : "+ConnectorBaseUrl)
+   global.ips = [ConnectorBaseUrl,KafkaRestUrl,SchemaRegistryUrl];
 //   return [ConnectorBaseUrl,KafkaRestUrl,SchemaRegistryUrl];
 }
 

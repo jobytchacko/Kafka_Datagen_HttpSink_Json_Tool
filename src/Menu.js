@@ -35,7 +35,7 @@ export const menu_question = (answer, schema) => {
     const index = parseInt(answer, 10);
 
     console.log(index);
-
+   
     switch (index) {
         case 1:
             createInstance().catch(e => console.log(e));

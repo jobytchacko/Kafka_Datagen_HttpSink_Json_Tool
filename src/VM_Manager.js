@@ -92,7 +92,7 @@ export async function deleteInstance() {
 
 
 export async function getIPAddress() {
-  console.log("Getting IP Address..");
+//   console.log("Getting IP Address..");
   const computeClient = new InstancesClient();
   const instances = await computeClient.get({ instance: instanceName, project, zone: zone });
   return instances[0]["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
