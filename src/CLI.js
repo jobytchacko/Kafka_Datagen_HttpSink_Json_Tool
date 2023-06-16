@@ -1,7 +1,8 @@
 import { menu_question, question_display } from './Menu.js'
 import inquirer from 'inquirer';
 import {  getIPAddressURL } from  './Kafka_Request.js';
-    
+import minify from 'jsonminify';
+
 global.ips = "";
 getIPAddressURL();
 
@@ -29,11 +30,7 @@ async function firstBlock() {
         },
     ])
     .then((ans) => {
-        let singleLineJson = "";
-        if(ans.schema != undefined)
-        singleLineJson = JSON.stringify(JSON.parse(ans.schema), null, '');
-        console.log(singleLineJson);
-        let temp_delay = () => menu_question(ans.index, singleLineJson) 
+        let temp_delay = () => menu_question(ans.index, minify(ans.schema)) 
         ips == "" ? setTimeout(temp_delay, 1000) : temp_delay()
     })
     .catch((error) => {

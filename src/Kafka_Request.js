@@ -3,7 +3,7 @@ import jp from 'jsonpath';
 import Kafka from 'node-rdkafka';
 import {  getIPAddress } from  './VM_Manager.js';
 import ld from 'lodash';
-
+import generate  from './Avro-schema-generator.js';
 
 
 const adminClient = Kafka.AdminClient.create({
@@ -33,7 +33,7 @@ let template = {
 };
 
 
-let file_schema = JSON.stringify({
+let file_schema = {
   "name": "Datagen_file_schema",
   "config": {
     "connector.class": "io.confluent.kafka.connect.datagen.DatagenConnector",
@@ -42,7 +42,7 @@ let file_schema = JSON.stringify({
     "tasks.max": "1",
     "kafka.topic": "Regex_Schema"
   }
-});
+};
 
 // const path = '$.address.city';
 // const newValue = 'San Francisco';
@@ -51,8 +51,6 @@ let file_schema = JSON.stringify({
 // lodash.set(data, ['config', 'schema.string'], 'Jane Smith');
 
 
-const schema_replace_s = (schema) => { if( schema != "") {   ld.set(template, ['config', 'schema.string'], schema); }  return template}
-const schema_replace_f = (schema) => { if( schema != "") { file_schema = JSON.parse(file_schema); ld.set(file_schema, ['config', 'schema.string'], schema) }  return file_schema}
 
 let ConnectorBaseUrl;
 
@@ -67,16 +65,25 @@ const  del_connectors = async () => { await request({ url: ips[0]+'/connectors' 
 
 
 
+const schema_replace_s = (schema) => { if( schema != "") {   ld.set(template, ['config', 'schema.string'], schema); }  return template}
+const schema_replace_f = (schema) => { if( schema != "") {  
+  
+  let schema_avro = generate(schema)
+  ld.set(file_schema, ['config', 'schema.string'], schema_avro) }  return file_schema}
+
+
+  
+
 const r1 = () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ) 
-const r2 = (b) => { request({ url: ips[2]+'/subjects/Template_Schema-value', method: 'DELETE'}).then(b).catch(printError) }
+const r2 = (a,b) => { request({ url: ips[2]+'/subjects/'+a, method: 'DELETE'}).then(b).catch(printError) }
 const r3 = (template,b) => { request({ url: ips[0]+'/connectors', method: 'POST', data: JSON.stringify(template) }).then(b).catch(printError) }
-// const r1 = a => { request({ url: a+'/connector-plugins' }).then( printDataFull ) }
 
 
-// Example request objects
 const req0 =  () => r1(ips);
-const req1 =  (schema) => {  r2(r3(schema_replace_s(schema),printData))    }
-const req2 = (schema) => {getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: schema_replace_f(schema) }).then(printData).catch(printError) })}
+const req1 =  (schema) =>  r2( "Template_Schema-value" ,  r3(schema_replace_s(schema),printData))    
+const req2 = (schema) =>   r2( "Regex_Schema-value" ,  r3(schema_replace_f(schema),printData)) 
+  
+  // getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: schema_replace_f(schema) }).then(printData).catch(printError) })}
 const req3 = () => {getIPAddressURL().then(a => { del_connectors() }   )}
 const req4 = (schema) => {getIPAddressURL().then(a => { request({ url: '/connector-plugins/DatagenConnector/config/validate', data: schema, method: 'put' }).then((res) => console.log(res.data)).catch(printError) })}
 const req5 =  () => {   getUserInput().then(printData).catch(printError) };
