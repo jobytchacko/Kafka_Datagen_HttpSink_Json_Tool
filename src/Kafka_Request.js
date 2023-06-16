@@ -65,18 +65,18 @@ const  del_connectors = async () => { await request({ url: ips[0]+'/connectors' 
 
 
 
-const schema_replace_s = (schema) => { if( schema != "") {   ld.set(template, ['config', 'schema.string'], schema); }  return template}
+const schema_replace_s = (schema) => { if( schema != "") {   ld.set(template, ['config', 'schema.string'], schema); }  return JSON.stringify(template)}
 const schema_replace_f = (schema) => { if( schema != "") {  
   
   let schema_avro = generate(schema)
-  ld.set(file_schema, ['config', 'schema.string'], schema_avro) }  return file_schema}
+  ld.set(file_schema, ['config', 'schema.string'], JSON.parse(schema_avro)) } console.log("Generated Avro Schema : "); return JSON.stringify(file_schema)}
 
 
   
 
 const r1 = () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ) 
 const r2 = (a,b) => { request({ url: ips[2]+'/subjects/'+a, method: 'DELETE'}).then(b).catch(printError) }
-const r3 = (template,b) => { request({ url: ips[0]+'/connectors', method: 'POST', data: JSON.stringify(template) }).then(b).catch(printError) }
+const r3 = (template,b) => { console.dir(template, {depth : null}) ; request({ url: ips[0]+'/connectors', method: 'POST', data: template }).then(b).catch(printError) }
 
 
 const req0 =  () => r1(ips);

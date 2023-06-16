@@ -4,10 +4,11 @@ import lodash from 'lodash';
 
 export default function generate(json_payload) {
 
-  // if (Object.keys(json_payload).length === 0)     json_payload = jsonfile.readFileSync("Schema-Files/pizza-order.json")
-  console.log("jj"+json_payload);
   let custom_schema = avsc.Type.forValue(JSON.parse(json_payload)).schema(); 
-  console.log("kk"+custom_schema);
+
+  custom_schema.name = "ust_data";
+  custom_schema.namespace = "lithin.personal";
+  lodash.set(custom_schema, ['connect.name'], "lithin.personal.ust_data");
 
   const func_replace = e => {
     switch (e.type) {

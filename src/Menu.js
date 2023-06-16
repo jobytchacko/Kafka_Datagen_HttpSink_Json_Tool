@@ -28,7 +28,8 @@ export const question_display = () => {
 }
 
 export const menu_question = (answer, schema) => {
-   
+    
+   console.log("JUSt"+schema);
     console.log("IP Address : "+ ips[0].split(':8083')[0]);
    
     switch (parseInt(answer)) {
