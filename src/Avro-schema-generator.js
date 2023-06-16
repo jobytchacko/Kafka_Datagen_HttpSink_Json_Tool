@@ -5,8 +5,9 @@ import lodash from 'lodash';
 export default function generate(json_payload) {
 
   // if (Object.keys(json_payload).length === 0)     json_payload = jsonfile.readFileSync("Schema-Files/pizza-order.json")
-  console.log(json_payload);
-  let custom_schema = avsc.Type.forValue(json_payload).schema(); 
+  console.log("jj"+json_payload);
+  let custom_schema = avsc.Type.forValue(JSON.parse(json_payload)).schema(); 
+  console.log("kk"+custom_schema);
 
   const func_replace = e => {
     switch (e.type) {
