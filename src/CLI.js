@@ -30,8 +30,7 @@ async function firstBlock() {
         },
     ])
     .then((ans) => {
-        let singleline = JSON.stringify(JSON.parse(ans.schema), null, '');
-        let temp_delay = () => menu_question(ans.index, singleline) 
+        let temp_delay = () => menu_question(ans.index, JSON.minify(ans.schema)) 
         ips == "" ? setTimeout(temp_delay, 1000) : temp_delay()
     })
     .catch((error) => {

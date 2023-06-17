@@ -31,6 +31,7 @@ export default function generate(json_payload) {
         if (e.type.items.type === "record") {
           e.type.items.fields.forEach(func_replace);
           lodash.set(e, ['type', 'arg.properties'], regex_types.array_min_max);
+          e.type.items.name = e.name+"1";
          
         }
     }
