@@ -12,7 +12,6 @@ const adminClient = Kafka.AdminClient.create({
   'socket.timeout.ms': 5000, 
 });
 
- 
   
 gaxios.instance.defaults = {
   headers: {
@@ -32,7 +31,6 @@ let template = {
   }
 };
 
-
 let file_schema = {
   "name": "Datagen_file_schema",
   "config": {
@@ -44,15 +42,27 @@ let file_schema = {
   }
 };
 
-// const path = '$.address.city';
-// const newValue = 'San Francisco';
+const schema_replace_s = (schema) => { if( schema != "") ld.set(template, ['config', 'schema.string'], schema);  return JSON.stringify(template)}
+const schema_replace_f = (json) => { if( json != "") ld.set(file_schema, ['config', 'schema.string'], JSON.stringify(generate(json)));  return JSON.stringify(file_schema) }
 
 
-// lodash.set(data, ['config', 'schema.string'], 'Jane Smith');
+const r1 = () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ) 
+const r2 = (a,b) => { request({ url: ips[2]+'/subjects/'+a, method: 'DELETE'}).then(b).catch(printError) }
+const r3 = (template,b) => { request({ url: ips[0]+'/connectors', method: 'POST', data: template }).then(b).catch(printError) }
+// const r4 = () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ) 
 
 
-
-let ConnectorBaseUrl;
+const req0 =  () => r1(ips);
+const req1 =  (schema) =>  r2( "Template_Schema-value" ,  r3(schema_replace_s(schema),printData))    
+const req2 = (schema) => { r2( "Regex_Schema-value" ,  r3(schema_replace_f(schema),printData)) }
+  
+  // getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: schema_replace_f(schema) }).then(printData).catch(printError) })}
+const req3 = async () => {del_connectors()  }
+const req4 = (schema) => {getIPAddressURL().then(a => { request({ url: '/connector-plugins/DatagenConnector/config/validate', data: schema, method: 'put' }).then((res) => console.log(res.data)).catch(printError) })}
+const req5 =  () => {   getUserInput().then(printData).catch(printError) };
+// const request6 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+// const request7 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+// const request8 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 
 const  del_connectors = async () => { await request({ url: ips[0]+'/connectors' }).then((response) => {
   if ( response.data.length  == 0)
@@ -63,35 +73,6 @@ const  del_connectors = async () => { await request({ url: ips[0]+'/connectors' 
   })}
 })}
 
-
-
-const schema_replace_s = (schema) => { if( schema != "") {   ld.set(template, ['config', 'schema.string'], schema); }  return JSON.stringify(template)}
-const schema_replace_f = (schema) => { if( schema != "") {  
-  
-  let schema_avro = generate(schema)
-  ld.set(file_schema, ['config', 'schema.string'], JSON.parse(schema_avro)) } console.log("Generated Avro Schema : "); return JSON.stringify(file_schema)}
-
-
-  
-
-const r1 = () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ) 
-const r2 = (a,b) => { request({ url: ips[2]+'/subjects/'+a, method: 'DELETE'}).then(b).catch(printError) }
-const r3 = (template,b) => { console.dir(template, {depth : null}) ; request({ url: ips[0]+'/connectors', method: 'POST', data: template }).then(b).catch(printError) }
-
-
-const req0 =  () => r1(ips);
-const req1 =  (schema) =>  r2( "Template_Schema-value" ,  r3(schema_replace_s(schema),printData))    
-const req2 = (schema) =>   r2( "Regex_Schema-value" ,  r3(schema_replace_f(schema),printData)) 
-  
-  // getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: schema_replace_f(schema) }).then(printData).catch(printError) })}
-const req3 = () => {getIPAddressURL().then(a => { del_connectors() }   )}
-const req4 = (schema) => {getIPAddressURL().then(a => { request({ url: '/connector-plugins/DatagenConnector/config/validate', data: schema, method: 'put' }).then((res) => console.log(res.data)).catch(printError) })}
-const req5 =  () => {   getUserInput().then(printData).catch(printError) };
-// const request6 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
-// const request7 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
-// const request8 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
-
-;
 
 export const requests = [req0, req1, req2, req3,req4, req5];
 
