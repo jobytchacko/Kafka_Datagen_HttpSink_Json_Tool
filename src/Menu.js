@@ -4,9 +4,9 @@ export const question_display = () => {
     const questions = [
         'Create a VM',
         'Get a list of all connector plugins',
-        'Create a connector based on Avro Schema',
-        'Create a connector based on JSON message',
-        'Validate a connector config',
+        'Create a template connector based on Avro Schema',
+        'Create a template connector based on JSON message',
+        'Create a connector based on Configuration',
         'Delete a VM',
         'Delete all the topics',
         'Delete all the connector',
