@@ -28,6 +28,12 @@ async function firstBlock() {
             message: 'Provide json : ',
             when: (ans) => ans.index === '4'
         },
+        {
+            type: 'editor',
+            name: 'schema',
+            message: 'Provide config : ',
+            when: (ans) => ans.index === '5'
+        },
     ])
     .then((ans) => { menu_question(ans.index, JSON.minify(ans.schema)) })
     .catch((error) => {

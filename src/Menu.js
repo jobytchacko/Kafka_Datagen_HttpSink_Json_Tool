@@ -43,7 +43,7 @@ export const menu_question = (answer, schema) => {
             requests[4](schema);
             break;
         case 5:
-            requests[5]();
+            requests[5](schema);
             break;
         case 6:
             requests[6]();

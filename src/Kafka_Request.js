@@ -43,19 +43,18 @@ const schema_replace_f = (json) => { if( json != "") ld.set(file_schema, ['confi
 const r1 = () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ).catch(printError)
 const r2 = (a,b) => { request({ url: ips[2]+'/subjects/'+a, method: 'DELETE'}).then(b).catch(printError) }
 const r3 = (template,b) => { request({ url: ips[0]+'/connectors', method: 'POST', data: template }).then(b).catch(printError) }
-// const r4 = () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ) 
+const r4 = (template) => request({ url: ips[0]+'/connectors', method: 'POST', data: template}).then(printDataFull).catch(printError)
 
 const dum ="";
 const req1 =  () =>  createInstance().catch(e => console.log(e))
 const req2 =  () => r1(ips);
 const req3 =  (schema) =>  r2( "Template_Schema-value" ,  r3(schema_replace_s(schema),printData))    
-const req4 = (schema) => { r2( "Regex_Schema-value" ,  r3(schema_replace_f(schema),printData)) }
+const req4 = (schema) =>  r2( "Regex_Schema-value" ,  r3(schema_replace_f(schema),printData)) 
 
-// getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: schema_replace_f(schema) }).then(printData).catch(printError) })}
-const req5 = (schema) => {getIPAddressURL().then(a => { request({ url: '/connector-plugins/DatagenConnector/config/validate', data: schema, method: 'put' }).then((res) => console.log(res.data)).catch(printError) })}
+const req5 = (schema) => r4(schema);
 const req6 =  () =>   deleteInstance();
 const req7 =  () => {   }
-const req8 =  () => { del_connectors() };
+const req8 =  () =>  del_connectors() ;
 
 // const request6 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 
