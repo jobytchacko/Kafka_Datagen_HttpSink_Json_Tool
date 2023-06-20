@@ -50,6 +50,7 @@ export const menu_question = (answer, schema) => {
             break;
         case 6:
             deleteInstance();
+            break;
         case 7:
             adminClient.connect();
             adminClient.deleteTopic("Template_Schema", 10000, a => console.log("Template_Schema : NOT DELETED : " + a));

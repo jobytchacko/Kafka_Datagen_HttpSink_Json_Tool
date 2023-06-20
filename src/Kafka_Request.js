@@ -1,7 +1,6 @@
 import gaxios , {request} from 'gaxios';
 import jp from 'jsonpath';
 import Kafka from 'node-rdkafka';
-import {  getIPAddress } from  './VM_Manager.js';
 import ld from 'lodash';
 import generate  from './Avro-schema-generator.js';
 
@@ -76,14 +75,6 @@ const  del_connectors = async () => { await request({ url: ips[0]+'/connectors' 
 
 export const requests = [req0, req1, req2, req3,req4, req5];
 
-
-export async function getIPAddressURL() {
-  const ipAddress = await getIPAddress();
-  const ConnectorBaseUrl = 'http://' + ipAddress + ':8083';
-  const KafkaRestUrl = 'http://' + ipAddress + ':8082';
-  const SchemaRegistryUrl = 'http://' + ipAddress + ':8081';
-  global.ips = [ConnectorBaseUrl,KafkaRestUrl,SchemaRegistryUrl];
-}
 
 const printError = (response) => { 
     console.dir(response, { depth : null});

@@ -92,10 +92,13 @@ export async function deleteInstance() {
 
 
 export async function getIPAddress() {
-//   console.log("Getting IP Address..");
   const computeClient = new InstancesClient();
   const instances = await computeClient.get({ instance: instanceName, project, zone: zone });
-  return instances[0]["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
+  const ipAddress = instances[0]["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
+  const ConnectorBaseUrl = 'http://' + ipAddress + ':8083';
+  const KafkaRestUrl = 'http://' + ipAddress + ':8082';
+  const SchemaRegistryUrl = 'http://' + ipAddress + ':8081';
+  global.ips = [ConnectorBaseUrl,KafkaRestUrl,SchemaRegistryUrl]; 
 }
 
 
