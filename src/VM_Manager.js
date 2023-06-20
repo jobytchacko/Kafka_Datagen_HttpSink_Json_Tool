@@ -64,6 +64,13 @@ export async function createInstance() {
     zone,
   });
 
+  await waitOperation(response);
+  console.log('Instance created.');
+}
+
+
+
+async function waitOperation(response) {
   let operation = response.latestResponse;
   const operationsClient = new ZoneOperationsClient();
 
@@ -75,11 +82,7 @@ export async function createInstance() {
       zone: operation.zone.split('/').pop(),
     });
   }
-
-  console.log('Instance created.');
 }
-
-
 
 export async function deleteInstance() {
   const [response] = await instancesClient.delete({
@@ -88,6 +91,7 @@ export async function deleteInstance() {
     zone,
     instance: instanceName
   }).then(console.log("VM Deleted : " + instanceName));
+  await waitOperation(response);
 }
 
 

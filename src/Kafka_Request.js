@@ -45,7 +45,7 @@ const schema_replace_s = (schema) => { if( schema != "") ld.set(template, ['conf
 const schema_replace_f = (json) => { if( json != "") ld.set(file_schema, ['config', 'schema.string'], JSON.stringify(generate(json)));  return JSON.stringify(file_schema) }
 
 
-const r1 = () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ) 
+const r1 = () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ).catch(printError)
 const r2 = (a,b) => { request({ url: ips[2]+'/subjects/'+a, method: 'DELETE'}).then(b).catch(printError) }
 const r3 = (template,b) => { request({ url: ips[0]+'/connectors', method: 'POST', data: template }).then(b).catch(printError) }
 // const r4 = () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ) 
@@ -77,7 +77,7 @@ export const requests = [req0, req1, req2, req3,req4, req5];
 
 
 const printError = (response) => { 
-    console.dir(response, { depth : null});
+    // console.dir(response, { depth : null});
     let msg = jp.query(response, "$..response.data.message");
    if( msg.length != 0) 
       console.dir(msg)

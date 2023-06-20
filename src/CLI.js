@@ -4,7 +4,7 @@ import {  getIPAddress } from  './VM_Manager.js';
 import minify from 'jsonminify';
 
 global.ips = "";
-getIPAddress();
+try { await getIPAddress() } catch(e) { console.log("VM NOT created"); }
 
 async function firstBlock() {
 
