@@ -102,7 +102,8 @@ export async function getIPAddress() {
   const ConnectorBaseUrl = 'http://' + ipAddress + ':8083';
   const KafkaRestUrl = 'http://' + ipAddress + ':8082';
   const SchemaRegistryUrl = 'http://' + ipAddress + ':8081';
-  global.ips = [ConnectorBaseUrl,KafkaRestUrl,SchemaRegistryUrl]; 
+  const BrokerUrl = 'http://' + ipAddress + ':9101';
+  global.ips = [ConnectorBaseUrl,KafkaRestUrl,SchemaRegistryUrl,BrokerUrl]; 
 }
 
 

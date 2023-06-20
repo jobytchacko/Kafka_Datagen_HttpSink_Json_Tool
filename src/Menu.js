@@ -1,14 +1,11 @@
 import { requests } from './Kafka_Request.js';
-import { createInstance, deleteInstance } from './VM_Manager.js';
-
-
 
 export const question_display = () => {
     const questions = [
         'Create a VM',
         'Get a list of all connector plugins',
-        'Create a connector based on template',
-        'Create a connector based on Regex Avro',
+        'Create a connector based on Avro Schema',
+        'Create a connector based on JSON message',
         'Validate a connector config',
         'Delete a VM',
         'Delete all the topics',
@@ -34,31 +31,28 @@ export const menu_question = (answer, schema) => {
    
     switch (parseInt(answer)) {
         case 1:
-            createInstance().catch(e => console.log(e));
+            requests[1]();
             break;
         case 2:
-            requests[0]();
+            requests[2]();
             break;
         case 3:
-            requests[1](schema);
+            requests[3](schema);
             break;
         case 4:
-            requests[2](schema);
-            break;
-        case 5:
             requests[4](schema);
             break;
+        case 5:
+            requests[5]();
+            break;
         case 6:
-            deleteInstance();
+            requests[6]();
             break;
         case 7:
-            adminClient.connect();
-            adminClient.deleteTopic("Template_Schema", 10000, a => console.log("Template_Schema : NOT DELETED : " + a));
-            adminClient.deleteTopic("Regex_Schema", a => console.log("Regex_Schema : NOT DELETED : " + a));
-            adminClient.disconnect();
+            requests[7]();
             break;
         case 8:
-            requests[3]();
+            requests[8]();
             break;
         default:
             console.log('Invalid index');

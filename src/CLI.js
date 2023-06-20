@@ -4,7 +4,7 @@ import {  getIPAddress } from  './VM_Manager.js';
 import minify from 'jsonminify';
 
 global.ips = "";
-try { await getIPAddress() } catch(e) { console.log("VM NOT created"); }
+await getIPAddress().catch(m => { console.log("\nVM is NOT created : \n") } )
 
 async function firstBlock() {
 
@@ -29,10 +29,7 @@ async function firstBlock() {
             when: (ans) => ans.index === '4'
         },
     ])
-    .then((ans) => {
-        let temp_delay = () => menu_question(ans.index, JSON.minify(ans.schema)) 
-        ips == "" ? setTimeout(temp_delay, 1000) : temp_delay()
-    })
+    .then((ans) => { menu_question(ans.index, JSON.minify(ans.schema)) })
     .catch((error) => {
       if (error.isTtyError) {
         console.log("Prompt couldn't be rendered in the current environment");
@@ -44,4 +41,4 @@ async function firstBlock() {
 
 
 console.log("WELCOME TO KAFKA DATA GENERATOR");
-setTimeout(firstBlock, 1000);
+firstBlock();

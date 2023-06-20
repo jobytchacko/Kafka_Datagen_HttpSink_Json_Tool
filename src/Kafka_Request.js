@@ -1,15 +1,10 @@
 import gaxios , {request} from 'gaxios';
 import jp from 'jsonpath';
-import Kafka from 'node-rdkafka';
+// import Kafka from 'node-rdkafka';
 import ld from 'lodash';
 import generate  from './Avro-schema-generator.js';
-
-
-const adminClient = Kafka.AdminClient.create({
-  'client.id': 'kafka-admin',
-  'metadata.broker.list': '104.197.189.100:9101',
-  'socket.timeout.ms': 5000, 
-});
+import { createInstance, deleteInstance } from './VM_Manager.js';
+import { Kafka, logLevel } from 'kafkajs';
 
   
 gaxios.instance.defaults = {
@@ -50,18 +45,21 @@ const r2 = (a,b) => { request({ url: ips[2]+'/subjects/'+a, method: 'DELETE'}).t
 const r3 = (template,b) => { request({ url: ips[0]+'/connectors', method: 'POST', data: template }).then(b).catch(printError) }
 // const r4 = () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ) 
 
+const dum ="";
+const req1 =  () =>  createInstance().catch(e => console.log(e))
+const req2 =  () => r1(ips);
+const req3 =  (schema) =>  r2( "Template_Schema-value" ,  r3(schema_replace_s(schema),printData))    
+const req4 = (schema) => { r2( "Regex_Schema-value" ,  r3(schema_replace_f(schema),printData)) }
 
-const req0 =  () => r1(ips);
-const req1 =  (schema) =>  r2( "Template_Schema-value" ,  r3(schema_replace_s(schema),printData))    
-const req2 = (schema) => { r2( "Regex_Schema-value" ,  r3(schema_replace_f(schema),printData)) }
-  
-  // getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: schema_replace_f(schema) }).then(printData).catch(printError) })}
-const req3 = async () => {del_connectors()  }
-const req4 = (schema) => {getIPAddressURL().then(a => { request({ url: '/connector-plugins/DatagenConnector/config/validate', data: schema, method: 'put' }).then((res) => console.log(res.data)).catch(printError) })}
-const req5 =  () => {   getUserInput().then(printData).catch(printError) };
+// getIPAddressURL().then(a => { request({ url: a+'/connectors', method: 'POST', data: schema_replace_f(schema) }).then(printData).catch(printError) })}
+const req5 = (schema) => {getIPAddressURL().then(a => { request({ url: '/connector-plugins/DatagenConnector/config/validate', data: schema, method: 'put' }).then((res) => console.log(res.data)).catch(printError) })}
+const req6 =  () =>   deleteInstance();
+const req7 =  () => {   }
+const req8 =  () => { del_connectors() };
+
 // const request6 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
-// const request7 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
-// const request8 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
+
+export const requests = [dum, req1, req2, req3, req4,req5, req6, req7 , req8];
 
 const  del_connectors = async () => { await request({ url: ips[0]+'/connectors' }).then((response) => {
   if ( response.data.length  == 0)
@@ -73,7 +71,6 @@ const  del_connectors = async () => { await request({ url: ips[0]+'/connectors' 
 })}
 
 
-export const requests = [req0, req1, req2, req3,req4, req5];
 
 
 const printError = (response) => { 
@@ -86,6 +83,10 @@ const printError = (response) => {
 
 const printData = (response) => { console.log(jp.query(response, "$..statusText",1))} ;  
 const printDataFull = (response) => { console.log(response.data)} ; 
+
+
+
+
 
 
 
