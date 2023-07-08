@@ -15,16 +15,20 @@ confluent connect resume <connector ID>
 confluent connect pause <connector ID>
 
 =================================================================================
+sleep 60
+docker exec -it connect bash   
+apt install -y default-jdk     done
+curl "https://client.hub.confluent.io/confluent-hub-client-latest.tar.gz" -o hub
+tar -xzvf hub
+cd bin
+y | confluent-hub install confluentinc/kafka-connect-http:1.7.2
+exit
+docker restart connect
 
-
- curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
- 
-   apt install -y default-jdk     done
-  curl "https://client.hub.confluent.io/confluent-hub-client-latest.tar.gz" -o hub
-  tar -xzvf hub
+  chmod +x /usr/local/bin/docker-compose
   cd bin && ./confluent-hub
   #chmod +x confluent-hub
- # sudo apt install -y default-jdk  
+ 
 
 
 /etc/kafka/connect-distributed.properties
@@ -36,4 +40,5 @@ usr/share/confluent-hub-components
 etc/kafka-connect/kafka-connect.properties
 
 
-confluent-hub install confluentinc/kafka-connect-http:1.7.2
+
+
