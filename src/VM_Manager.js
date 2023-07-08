@@ -54,14 +54,13 @@ export async function createInstance() {
               chmod +x /usr/local/bin/docker-compose
               git clone https://github.com/Lithin87/Nodejs_Kafka.git /home/ravindcable4/app
               cd /home/ravindcable4/app/Resources && docker-compose up -d
-              sleep 300
-              curl "https://client.hub.confluent.io/confluent-hub-client-latest.tar.gz" -o hubtemp
-              docker exec -it connect bash
-              curl "https://client.hub.confluent.io/confluent-hub-client-latest.tar.gz" -o hub
-              tar -xzvf hub
-              cd bin && yes | confluent-hub install confluentinc/kafka-connect-http:1.7.2
-              exit
-              docker restart connect
+              #sleep 300
+              #docker exec -it connect bash
+              #curl "https://client.hub.confluent.io/confluent-hub-client-latest.tar.gz" -o hub
+              #tar -xzvf hub
+              #cd bin && yes | confluent-hub install confluentinc/kafka-connect-http:1.7.2
+              #exit
+              #docker restart connect
             `,
           },
         ],
