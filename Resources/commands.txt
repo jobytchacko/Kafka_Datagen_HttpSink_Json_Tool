@@ -26,3 +26,14 @@ confluent connect pause <connector ID>
   #chmod +x confluent-hub
  # sudo apt install -y default-jdk  
 
+
+/etc/kafka/connect-distributed.properties
+
+./confluent-hub install confluentinc/kafka-connect-http:latest --component-dir <path-to-component-directory> --worker-configs <path-to-worker-configs-file>
+
+usr/share/confluent-hub-components
+
+etc/kafka-connect/kafka-connect.properties
+
+
+confluent-hub install confluentinc/kafka-connect-http:1.7.2
