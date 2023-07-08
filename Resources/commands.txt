@@ -38,6 +38,7 @@ docker restart connect
 usr/share/confluent-hub-components
 
 etc/kafka-connect/kafka-connect.properties
+lithin87/ust_sink_connector
 
 
 
