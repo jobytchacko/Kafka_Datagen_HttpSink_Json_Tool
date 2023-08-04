@@ -1,6 +1,5 @@
 import gaxios , {request} from 'gaxios';
 import jp from 'jsonpath';
-// import Kafka from 'node-rdkafka';
 import ld from 'lodash';
 import generate  from './Avro-schema-generator.js';
 import { createInstance, deleteInstance } from './VM_Manager.js';
@@ -36,28 +35,40 @@ let file_schema = {
   }
 };
 
+let sink_url = {
+  "name": "Sink_url",
+  "config": {
+    "connector.class": "io.confluent.kafka.connect.datagen.DatagenConnector",
+    "name": "Datagen_file_schema",
+    "schema.string": "{\"connect.name\":\"lithin.personal.ust_data\",\"name\":\"ust_data\",\"namespace\":\"lithin.personal\",\"type\":\"record\",\"fields\":[{\"name\":\"store_id\",\"type\":{\"type\":\"int\",\"arg.properties\":{\"range\":{\"min\":1,\"max\":100}}}},{\"name\":\"order_lines\",\"type\":{\"type\":\"array\",\"items\":{\"name\":\"order_line\",\"type\":\"record\",\"fields\":[{\"name\":\"product_id\",\"type\":{\"type\":\"int\",\"arg.properties\":{\"range\":{\"min\":1,\"max\":100}}}},{\"name\":\"category\",\"type\":{\"type\":\"string\",\"arg.properties\":{\"regex\":\"User_[1-9]{0,1}\"}}},{\"name\":\"quantity\",\"type\":{\"type\":\"int\",\"arg.properties\":{\"range\":{\"min\":1,\"max\":100}}}},{\"name\":\"unit_price\",\"type\":{\"type\":\"float\",\"arg.properties\":{\"range\":{\"min\":0.1,\"max\":10}}}},{\"name\":\"net_price\",\"type\":{\"type\":\"float\",\"arg.properties\":{\"range\":{\"min\":0.1,\"max\":10}}}}]},\"arg.properties\":{\"length\":{\"min\":1,\"max\":5}}}}]}",
+    "tasks.max": "1",
+    "kafka.topic": "Regex_Schema"
+  }
+};
+
 const schema_replace_s = (schema) => { if( schema != "") ld.set(template, ['config', 'schema.string'], schema);  return JSON.stringify(template)}
 const schema_replace_f = (json) => { if( json != "") ld.set(file_schema, ['config', 'schema.string'], JSON.stringify(generate(json)));  return JSON.stringify(file_schema) }
 
 
 const r1 = () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ).catch(printError)
-const r2 = (a,b) => { request({ url: ips[2]+'/subjects/'+a, method: 'DELETE'}).then(b).catch(printError) }
-const r3 = (template,b) => { request({ url: ips[0]+'/connectors', method: 'POST', data: template }).then(b).catch(printError) }
+const r2 = (a,b,url) => { request({ url: ips[2]+'/subjects/'+a, method: 'DELETE'}).then(b).then(()=> { if(url != null) n = 9 }).catch(printError) }
+const r3 = (template) =>  request({ url: ips[0]+'/connectors', method: 'POST', data: template }).then(printData).catch(printError) 
 const r4 = (template) => request({ url: ips[0]+'/connectors', method: 'POST', data: template}).then(printDataFull).catch(printError)
+const r5 = (url) => { if(url != null)  fg =78;}
 
-const dum ="";
 const req1 =  () =>  createInstance().catch(e => console.log(e))
 const req2 =  () => r1(ips);
-const req3 =  (schema) =>  r2( "Template_Schema-value" ,  r3(schema_replace_s(schema),printData))    
-const req4 = (schema) =>  r2( "Regex_Schema-value" ,  r3(schema_replace_f(schema),printData)) 
+const req3 =  (schema,url) =>  r2( "Template_Schema-value" ,  r3(schema_replace_s(schema)))    
+const req4 = (schema,url) =>  r2( "Regex_Schema-value" ,  r3(schema_replace_f(schema))) 
 
-const req5 = (schema) => r4(schema);
+const req5 = (schema,url) => r4(schema);
 const req6 =  () =>   deleteInstance();
 const req7 =  () => {   }
 const req8 =  () =>  del_connectors() ;
 
 // const request6 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 
+const dum ="";
 export const requests = [dum, req1, req2, req3, req4,req5, req6, req7 , req8];
 
 const  del_connectors = async () => { await request({ url: ips[0]+'/connectors' }).then((response) => {

@@ -34,8 +34,14 @@ async function firstBlock() {
             message: 'Provide config : ',
             when: (ans) => ans.index === '5'
         },
+        {
+            type: 'input',
+            name: 'url',
+            message: 'Mention URL if sink connector needed : ',
+            when: (ans) =>   ['3','4','5'].includes(ans.index)   
+        }
     ])
-    .then((ans) => { menu_question(ans.index, JSON.minify(ans.schema)) })
+    .then((ans) => { menu_question(ans.index, JSON.minify(ans.schema), ans.url) })
     .catch((error) => {
       if (error.isTtyError) {
         console.log("Prompt couldn't be rendered in the current environment");

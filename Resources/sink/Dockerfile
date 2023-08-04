@@ -9,9 +9,3 @@ RUN curl -L "https://client.hub.confluent.io/confluent-hub-client-latest.tar.gz"
     && rm hub.tar.gz \
     && cd bin \
     && yes | ./confluent-hub install confluentinc/kafka-connect-http:1.7.2
-
-# Set the working directory to the Kafka Connect installation directory
-WORKDIR /usr/local/share/kafka/plugins
-
-# Start Kafka Connect with the additional connector
-CMD ["confluent", "local", "start", "connect"]

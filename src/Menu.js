@@ -9,7 +9,7 @@ export const question_display = () => {
         'Create a connector based on Configuration',
         'Delete a VM',
         'Delete all the topics',
-        'Delete all the connector',
+        'Delete all the connector'
     ];
 
     // Function to print numbered questions
@@ -24,7 +24,7 @@ export const question_display = () => {
 
 }
 
-export const menu_question = (answer, schema) => {
+export const menu_question = (answer, schema, url) => {
     
     if(parseInt(answer) != 1)
     console.log("IP Address : "+ ips[0].split(':8083')[0]);
@@ -37,13 +37,13 @@ export const menu_question = (answer, schema) => {
             requests[2]();
             break;
         case 3:
-            requests[3](schema);
+            requests[3](schema,url);
             break;
         case 4:
-            requests[4](schema);
+            requests[4](schema,url);
             break;
         case 5:
-            requests[5](schema);
+            requests[5](schema,url);
             break;
         case 6:
             requests[6]();

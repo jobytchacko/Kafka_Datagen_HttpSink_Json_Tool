@@ -41,5 +41,16 @@ etc/kafka-connect/kafka-connect.properties
 lithin87/ust_sink_connector
 
 
+docker build -t my_custom_datagen:1.0 .
 
 
+
+version: '3'
+
+services:
+  datagen:
+    image: my_custom_datagen:1.0
+    # Your other service configurations here
+
+
+docker-compose up -d
