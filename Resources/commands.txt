@@ -54,3 +54,15 @@ services:
 
 
 docker-compose up -d
+
+
+{
+    "name": "HttpSinkConnector_01",
+    "connector.class": "HttpSink",
+    "kafka.api.key": "LBQI5FO4NTSQKS4Y",
+    "kafka.api.secret": "XxWYNcND/JEIUWIWEjv7B5jnPU0fIs/hBUPi0N19VLe7C2ulql7Oo3HWxaw6ziBY",
+    "topics": "rocket",
+    "tasks.max": "1",
+    "http.api.url": "https://34.117.38.239.nip.io/helloworld",
+    "input.data.format": "JSON"
+}
