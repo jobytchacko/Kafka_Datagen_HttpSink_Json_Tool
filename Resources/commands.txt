@@ -57,12 +57,17 @@ docker-compose up -d
 
 
 {
-    "name": "HttpSinkConnector_01",
-    "connector.class": "HttpSink",
-    "kafka.api.key": "LBQI5FO4NTSQKS4Y",
-    "kafka.api.secret": "XxWYNcND/JEIUWIWEjv7B5jnPU0fIs/hBUPi0N19VLe7C2ulql7Oo3HWxaw6ziBY",
-    "topics": "rocket",
+  "name": "HttpSinkConnectorConnector_0",
+  "config": {
+    "name": "HttpSinkConnectorConnector_0",
+    "connector.class": "io.confluent.connect.http.HttpSinkConnector",
     "tasks.max": "1",
-    "http.api.url": "https://34.117.38.239.nip.io/helloworld",
-    "input.data.format": "JSON"
+    "topics": "Template_Schema",
+    "http.api.url": "https://kafkasinkcollector-tava5544oa-uc.a.run.app",
+    "request.method": "post",
+    "reporter.result.topic.replication.factor": "1",
+    "reporter.error.topic.replication.factor": "1",
+    "reporter.bootstrap.servers": "broker:29092",
+    "confluent.topic.bootstrap.servers": "broker:29092"
+  }
 }
