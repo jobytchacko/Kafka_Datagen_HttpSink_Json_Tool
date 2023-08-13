@@ -1,6 +1,7 @@
 import { menu_question, question_display } from './Menu.js'
 import inquirer from 'inquirer';
 import {  getIPAddress } from  './VM_Manager.js';
+import minify from 'jsonminify';
 
 global.ips = "";
 await getIPAddress().catch(m => { console.log("\nVM is NOT created : \n") } )

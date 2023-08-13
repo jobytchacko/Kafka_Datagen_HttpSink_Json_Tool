@@ -35,15 +35,19 @@ let file_schema = {
 };
 
 let sink_url = {
-  "name": "Sink_url",
+  "name": "HttpSinkConnectorConnector_0",
   "config": {
-    "name": "Sink_url",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "name": "HttpSinkConnectorConnector_0",
     "connector.class": "io.confluent.connect.http.HttpSinkConnector",
-    "bootstrap.servers" : "localhost:9092",
-    "topics": "Template_Schema",
-    "tasks.max": "1",
-    "http.api.url": "https://34.117.38.239.nip.io/helloworld",
-    "input.data.format": "JSON"
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "topics": "Regex_Schema",
+    "http.api.url": "https://kafkasinkcollector-tava5544oa-uc.a.run.app",
+    "request.method": "post",
+    "reporter.result.topic.replication.factor": "1",
+    "reporter.error.topic.replication.factor": "1",
+    "reporter.bootstrap.servers": "broker:29092"
   }
 };
 
@@ -62,7 +66,7 @@ const r4 = (template) => request({ url: ips[0]+'/connectors', method: 'POST', da
 const req1 =  () =>  createInstance().catch(e => console.log(e))
 const req2 =  () => r1(ips);
 const req3 =  (schema,url) =>  r2( "Template_Schema-value" ,  r3(schema_replace_s(schema)) , r3(schema_replace_url(url)) )    
-const req4 = (schema,url) =>  r2( "Regex_Schema-value" ,  r3(schema_replace_f(schema))  , url ) 
+const req4 = (schema,url) =>  r2( "Regex_Schema-value" ,  r3(schema_replace_f(schema))  , r3(schema_replace_url(url)) ) 
 
 const req5 = (schema,url) => r4(schema);
 const req6 =  () =>   deleteInstance();
