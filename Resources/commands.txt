@@ -71,3 +71,25 @@ docker-compose up -d
     "confluent.topic.bootstrap.servers": "broker:29092"
   }
 }
+
+
+
+{
+  "name": "HttpSinkConnectorConnector_0",
+  "config": {
+    "name": "HttpSinkConnectorConnector_0",
+    "connector.class": "io.confluent.connect.http.HttpSinkConnector",
+    "topics": "Regex_Schema",
+    "http.api.url": "https://kafkasinkcollector-tava5544oa-uc.a.run.app",
+    "request.method": "post",
+    "reporter.result.topic.replication.factor": "1",
+    "reporter.error.topic.replication.factor": "1",
+    "reporter.bootstrap.servers": "broker:29092"
+  }
+}
+
+  console.log("Hello : "+req.body);
+
+  key.converter=org.apache.kafka.connect.storage.StringConverter
+value.converter=org.apache.kafka.connect.json.JsonConverter
+                io.confluent.connect.avro.AvroConverter
