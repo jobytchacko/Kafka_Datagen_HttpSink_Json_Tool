@@ -23,7 +23,7 @@ export async function createInstance() {
         {
           initializeParams: {
             diskSizeGb: '15',
-            sourceImage,
+            sourceImage: 'kafka-datagen-connect-image',
           },
           autoDelete: true,
           boot: true,
@@ -52,8 +52,8 @@ export async function createInstance() {
               apt install -y docker.io
               curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
-              git clone https://github.com/Lithin87/Kafka_Datagen_HttpSink_Json_Tool.git ~/app
-              cd ~/app/Resources && docker-compose up -d
+              git clone https://github.com/Lithin87/Kafka_Datagen_HttpSink_Json_Tool.git /home/ravindcable4/app
+              cd /home/ravindcable4/app/Resources && docker-compose up -d
             `,
           },
         ],
