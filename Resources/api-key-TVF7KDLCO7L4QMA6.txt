@@ -1,7 +1,0 @@
-=== Confluent Cloud API key: lsrc-m8my0w ===
-
-API key:
-TVF7KDLCO7L4QMA6
-
-API secret:
-hFS4OJquhJw5skJg787DL35Om5J/UoLrX42wztUjhTWxwQ/5WCLzHCtzK/ryO5Ct

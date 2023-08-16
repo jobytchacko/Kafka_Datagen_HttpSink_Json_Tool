@@ -32,28 +32,56 @@ docker restart connect
 
 
 /etc/kafka/connect-distributed.properties
-
 ./confluent-hub install confluentinc/kafka-connect-http:latest --component-dir <path-to-component-directory> --worker-configs <path-to-worker-configs-file>
-
 usr/share/confluent-hub-components
-
 etc/kafka-connect/kafka-connect.properties
 lithin87/ust_sink_connector
 
-
-docker build -t my_custom_datagen:1.0 .
-
-
-
-version: '3'
-
-services:
-  datagen:
-    image: my_custom_datagen:1.0
-    # Your other service configurations here
-
-
-docker-compose up -d
+{
+  "connect.name": "lithin.personal.ust_data",
+  "fields": [
+    {
+      "name": "store_id",
+      "type": "int"
+    },
+    {
+      "name": "order_lines",
+      "type": {
+        "items": {
+          "connect.name": "lithin.personal.order_line",
+          "fields": [
+            {
+              "name": "product_id",
+              "type": "int"
+            },
+            {
+              "name": "category",
+              "type": "string"
+            },
+            {
+              "name": "quantity",
+              "type": "int"
+            },
+            {
+              "name": "unit_price",
+              "type": "float"
+            },
+            {
+              "name": "net_price",
+              "type": "float"
+            }
+          ],
+          "name": "order_line",
+          "type": "record"
+        },
+        "type": "array"
+      }
+    }
+  ],
+  "name": "ust_data",
+  "namespace": "lithin.personal",
+  "type": "record"
+}
 
 
 
