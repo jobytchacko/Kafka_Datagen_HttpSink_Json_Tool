@@ -106,3 +106,21 @@ value.converter=org.apache.kafka.connect.json.JsonConverter
     "reporter.bootstrap.servers": "broker:29092"
   }
 }
+
+const machineImage = 'projects/ecstatic-cosmos-387220/global/machineImages/kafka-datagen-connect-image'; // Replace with your machine image URL
+
+   instanceResource: {
+      name: instanceName,
+      sourceMachineImage: machineImage,
+      metadata: {
+        items: [
+          {
+            key: 'startup-script',
+            value: `
+              #!/bin/bash
+              git clone https://github.com/Lithin87/Kafka_Datagen_HttpSink_Json_Tool.git /home/ravindcable4/app
+              cd /home/ravindcable4/app/Resources && docker-compose start `,
+          },
+        ],
+      },
+    },

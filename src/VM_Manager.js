@@ -23,7 +23,7 @@ export async function createInstance() {
         {
           initializeParams: {
             diskSizeGb: '15',
-            sourceImage: 'kafka-datagen-connect-image',
+            sourceImage,
           },
           autoDelete: true,
           boot: true,
