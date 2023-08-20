@@ -107,7 +107,7 @@ value.converter=org.apache.kafka.connect.json.JsonConverter
   }
 }
 
-const machineImage = 'projects/ecstatic-cosmos-387220/global/machineImages/kafka-datagen-connect-image'; // Replace with your machine image URL
+const machineImage = 'projects/ecstatic-cosmos-387220/global/machineImages/kafka-datagen-connect-image'; 
 
    instanceResource: {
       name: instanceName,

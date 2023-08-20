@@ -2,7 +2,7 @@ import gaxios , {request} from 'gaxios';
 import jp from 'jsonpath';
 import ld from 'lodash';
 import generate  from './Avro-schema-generator.js';
-import { createInstance, deleteInstance } from './VM_Manager.js';
+import { createInstance, deleteInstance } from './Kafka_Request_VM.js';
 
   
 gaxios.instance.defaults = {

@@ -1,6 +1,6 @@
-import { menu_question, question_display } from './Menu.js'
+import { menu_question, question_display } from './CLI-Menu.js'
 import inquirer from 'inquirer';
-import {  getIPAddress } from  './VM_Manager.js';
+import {  getIPAddress } from  './Kafka_Request_VM.js';
 import minify from 'jsonminify';
 
 global.ips = "";
