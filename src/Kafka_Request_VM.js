@@ -1,7 +1,7 @@
 import { InstancesClient, ZoneOperationsClient } from '@google-cloud/compute';
 import { auth } from 'google-auth-library';
 
-const project = 'ecstatic-cosmos-387220';
+const project = 'cloudtest-396310';
 const zone = 'us-central1-a'
 const instanceName = 'kafkavm'
 const machineType = 'e2-standard-4';
