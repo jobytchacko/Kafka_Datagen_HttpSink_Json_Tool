@@ -16,7 +16,7 @@ export async function createInstance() {
 
   console.log(`\n\nCreating =>\nINSTANCE : ${instanceName} \nZONE     : ${zone}`);
 
-  const [response] = await instancesClient.insert({
+  const [response] =  await instancesClient.insert({
     instanceResource: {
       name: instanceName,
       disks: [
@@ -66,6 +66,7 @@ export async function createInstance() {
 
   await waitOperation(response);
   console.log('Instance created.');
+  return 'Instance created.';
 }
 
 
@@ -90,8 +91,10 @@ export async function deleteInstance() {
     project,
     zone,
     instance: instanceName
-  }).then(console.log("VM Deleted : " + instanceName));
+  }).catch( e => {console.log('Error : VM already deleted\n'+e);return 'VM Deleted' });
   await waitOperation(response);
+  console.log('VM Deleted : ');
+  return 'VM Deleted';
 }
 
 

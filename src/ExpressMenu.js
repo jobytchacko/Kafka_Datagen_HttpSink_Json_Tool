@@ -1,69 +1,94 @@
-const express = require('express');
+import  express from 'express';
+import { requests } from './Kafka_Request.js';
 
 const app = express();
 app.use(express.json());
 
-// Sample data storage (replace this with a proper database or storage mechanism)
-let items = [];
 
-// Route handler for creating an item
-app.post('/items', (req, res) => {
+let services = [];
+const questions = {
+  1 : 'Create a VM',
+  2 :'Get a list of all connector plugins',
+  3 : 'Create a template connector based on Avro Schema',
+  4 :'Create a template connector based on JSON message',
+  5 :'Create a connector based on Configuration',
+  6 : 'Delete a VM',
+  7 :'Delete all the topics',
+  8 :'Delete all the connector'
+};
+
+app.get('/services', (req, res) => {
+  res.status(200).json(questions);
+});
+
+
+app.get('/services/:id', (req, res) => {
+  const itemId = req.params.id;
+
+const printSuccess = success => { res.status(200).json({ message: success })};
+const printError = error => {  res.status(400).json({ message: "Error occured. "+error})};
+
+  switch (parseInt(itemId)) {
+    case 1:
+        requests[1]().then(printSuccess).catch(printError);
+        break;
+    case 2:
+        requests[2]().then(printSuccess).catch(printError);
+        break;
+    case 3:
+        requests[3](schema,url);
+        break;
+    case 4:
+        requests[4](schema,url);
+        break;
+    case 5:
+        requests[5](schema,url);
+        break;
+    case 6:
+        requests[6]().then(printSuccess).catch(printError);
+        break;
+    case 7:
+        requests[7]().then(printSuccess).catch(printError);
+        break;
+    case 8:
+        requests[8]().then(printSuccess).catch(printError);
+        break;
+    default:
+        console.log('Invalid index');
+        break;
+}
+
+});
+
+
+app.post('/services/:id', (req, res) => {
   const newItem = req.body;
-  items.push(newItem);
-  res.status(201).json({ message: 'Item created successfully', item: newItem });
-});
-
-// Route handler for getting all items
-app.get('/items', (req, res) => {
-  res.status(200).json(items);
-});
-
-// Route handler for getting a specific item by ID
-app.get('/items/:id', (req, res) => {
   const itemId = req.params.id;
-  const item = items.find(item => item.id === itemId);
-  if (!item) {
-    res.status(404).json({ message: 'Item not found' });
-  } else {
-    res.status(200).json(item);
-  }
-});
-
-// Route handler for updating a specific item by ID
-app.put('/items/:id', (req, res) => {
-  const itemId = req.params.id;
-  const updatedItem = req.body;
-  const index = items.findIndex(item => item.id === itemId);
-  if (index === -1) {
-    res.status(404).json({ message: 'Item not found' });
-  } else {
-    items[index] = { ...items[index], ...updatedItem };
-    res.status(200).json({ message: 'Item updated successfully', item: items[index] });
-  }
-});
-
-// Route handler for deleting a specific item by ID
-app.delete('/items/:id', (req, res) => {
-  const itemId = req.params.id;
-  const index = items.findIndex(item => item.id === itemId);
-  if (index === -1) {
-    res.status(404).json({ message: 'Item not found' });
-  } else {
-    const deletedItem = items.splice(index, 1);
-    res.status(200).json({ message: 'Item deleted successfully', item: deletedItem });
-  }
-});
-
-// Route handler for filtering items by a query parameter (e.g., /items?category=electronics)
-app.get('/items', (req, res) => {
   const category = req.query.category;
-  const filteredItems = items.filter(item => item.category === category);
-  res.status(200).json(filteredItems);
+  const printError = error => {  res.status(400).json({ message: "Error occured" })};
+  const printSuccess = success => { res.status(200).json({ message: gh })};
+  
+    switch (parseInt(itemId)) {
+      case 3:
+          requests[3](schema,url);
+          break;
+      case 4:
+          requests[4](schema,url);
+          break;
+      case 5:
+          requests[5](schema,url);
+          break;
+      default:
+          console.log('Invalid index');
+          break;
+  }
+  
 });
 
-// Route handler for handling all other undefined routes
+
+
 app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
+  res.status(404).json({ message: 'URL Route not found' });
 });
 
 const PORT = process.env.PORT || 3000;

@@ -5,7 +5,8 @@
   "main": "src/CLI.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/CLI.js",
+    "startcli": "node src/CLI.js",
+    "startrest": "node src/ExpressMenu.js",
     "vm": "node VM_Manager.js"
   },
   "author": "",

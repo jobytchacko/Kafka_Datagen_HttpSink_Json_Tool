@@ -12,6 +12,9 @@ gaxios.instance.defaults = {
   }
 }
 
+global.ips = "";
+await getIPAddress().catch(m => { console.log("\nVM is NOT created : \n") } )
+
 let template = {
   "name": "Datagen_pre_template",
   "config": {
@@ -57,19 +60,19 @@ const schema_replace_f = (json) => { if( json != "") ld.set(file_schema, ['confi
 
 const schema_replace_url = (url) => { if( url != "") ld.set(sink_url, ['config', 'http.api.url'], url);  return JSON.stringify(sink_url)}
 
-const r1 = () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ).catch(printError)
+
 const r2 = (a,b,c) => { request({ url: ips[2]+'/subjects/'+a, method: 'DELETE'}).then(b).then(c).catch(printError) }
 const r3 = (template) =>  request({ url: ips[0]+'/connectors', method: 'POST', data: template }).then(printData).catch(printError) 
 const r4 = (template) => request({ url: ips[0]+'/connectors', method: 'POST', data: template}).then(printDataFull).catch(printError)
 
 
-const req1 =  () =>  createInstance().catch(e => console.log(e))
-const req2 =  () => r1(ips);
+const req1 =  () =>  createInstance().catch(e => {return e});
+const req2 =   () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ).catch(printError)    
 const req3 =  (schema,url) =>  r2( "Template_Schema-value" ,  r3(schema_replace_s(schema)) , r3(schema_replace_url(url)) )    
 const req4 = (schema,url) =>  r2( "Regex_Schema-value" ,  r3(schema_replace_f(schema))  , r3(schema_replace_url(url)) ) 
 
 const req5 = (schema,url) => r4(schema);
-const req6 =  () =>   deleteInstance();
+const req6 =  () =>   deleteInstance().catch(e => {return e});
 const req7 =  () => {   }
 const req8 =  () =>  del_connectors() ;
 
@@ -94,12 +97,15 @@ const printError = (response) => {
     // console.dir(response, { depth : null});
     let msg = jp.query(response, "$..response.data.message");
    if( msg.length != 0) 
-      console.dir(msg)
+      {console.dir(msg); return msg}
       else
-      console.log("Containers aren't up..Either start the containers or Wait")}
+      { let str = "Containers aren't up..Either start the containers or Wait";
+        console.log(str); return str
+      }
+    }
 
 const printData = (response) => { console.log(jp.query(response, "$..statusText",1))} ;  
-const printDataFull = (response) => { console.log(response.data)} ; 
+const printDataFull = (response) => { console.log(response.data);  return response} ; 
 
 
 
