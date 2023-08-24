@@ -69,9 +69,10 @@ const req2 =   () => request({ url: ips[0]+'/connector-plugins' }).then( printDa
 const  req3 = async (schema,url) =>     {
   const error = {};
   // const response = await request({ url: ips[2]+'/subjects/'+"Template_Schema-value", method: 'DELETE'}).catch(s=> gh.hj = s);
-  const response1 =  await url2(schema_replace_s(schema)).catch(s=> gh.sd2 = s);
-  const response2 = await (url2(schema_replace_url(url))).then(s => gh.sd1 = s).catch(s=> gh.yu3 = s);
-  console.log(    response1,"dfgfg",    response2 , gh  );
+  const resp1 =  await url2(schema_replace_s(schema)).catch(s=> error.a = s);
+  const resp2 = await (url2(schema_replace_url(url))).catch(s=> error.b = s);
+
+  console.log(  resp1, resp2 , error  );
   // .then(fs.readFileSync('output.txt','utf8')).catch(printError) 
 }
 // .then(() =>  {return "Connector created"}  )    }
@@ -87,12 +88,12 @@ const req8 =  () =>  del_connectors() ;
 const dum ="";
 export const requests = [dum, req1, req2, req3, req4,req5, req6, req7 , req8];
 
-const  del_connectors = async () => { await request({ url: ips[0]+'/connectors' }).then((response) => {
+const  del_connectors = async () => {  request({ url: ips[0]+'/connectors' }).then((response) => {
   if ( response.data.length  == 0)
   {console.log("No Connectors present");  return 'No Connectors present';}
   else{
   response.data.forEach((element) => {
-      request({ url: ips[0]+`/connectors/${element}`, method: 'delete' }).then(() => { console.log(element + " : DELETED"); return 'No Connectors present'});
+      request({ url: ips[0]+`/connectors/${element}`, method: 'delete' }).then((s) => { console.log(element + " : DELETED"+s); return 'No Connectors present'+s});
   })}
 })}
 
@@ -114,7 +115,7 @@ const printError = (response) => {
       }
     }
 
-const printData = (response) => { let gh = jp.query(response, "$..statusText",1) ; console.log(gh); fs.appendFileSync('output.txt', gh.toString()); return gh.toString} ;
+const printData = (response) => { let gh = jp.query(response, "$..statusText",1) ; console.log(gh); return gh} ;
 
 const printDataFull = (response) => { console.log(response.data);  return response.data} ; 
 
