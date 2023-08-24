@@ -1,6 +1,7 @@
 import  express from 'express';
 import { requests } from './Kafka_Request.js';
-
+import fs from 'fs';
+// import {getIPAddress} from './Kafka_Request_VM.js'
 const app = express();
 app.use(express.json());
 
@@ -21,12 +22,16 @@ app.get('/services', (req, res) => {
   res.status(200).json(questions);
 });
 
+function checkSuccess(s) {
+  if (s === undefined || (s.details && s.details.length == 0) || Object.keys(s).length === 0) s = "Already done";
+  return s;
+}
 
 app.get('/services/:id', (req, res) => {
   const itemId = req.params.id;
-
-const printSuccess = success => { res.status(200).json({ message: success })};
-const printError = error => {  res.status(400).json({ message: "Error occured. "+error})};
+  
+  const printSuccess = s => {  res.status(200).json({ message: checkSuccess(s) })};
+  const printError = error => {  res.status(400).json({ message: "Error occured. "+error})};
 
   switch (parseInt(itemId)) {
     case 1:
@@ -34,15 +39,6 @@ const printError = error => {  res.status(400).json({ message: "Error occured. "
         break;
     case 2:
         requests[2]().then(printSuccess).catch(printError);
-        break;
-    case 3:
-        requests[3](schema,url);
-        break;
-    case 4:
-        requests[4](schema,url);
-        break;
-    case 5:
-        requests[5](schema,url);
         break;
     case 6:
         requests[6]().then(printSuccess).catch(printError);
@@ -54,7 +50,8 @@ const printError = error => {  res.status(400).json({ message: "Error occured. "
         requests[8]().then(printSuccess).catch(printError);
         break;
     default:
-        console.log('Invalid index');
+        res.status(404).json({ message: "Invalid index for GET. Use only 1,2,6,7,8"})
+        console.log('Invalid index for GET. Use only 1,2,6,7,8');
         break;
 }
 
@@ -62,24 +59,28 @@ const printError = error => {  res.status(400).json({ message: "Error occured. "
 
 
 app.post('/services/:id', (req, res) => {
-  const newItem = req.body;
   const itemId = req.params.id;
+  const body = req.body;
   const category = req.query.category;
-  const printError = error => {  res.status(400).json({ message: "Error occured" })};
-  const printSuccess = success => { res.status(200).json({ message: gh })};
+  fs.writeFileSync('output.txt','');
+
+  const printSuccess = s => {  res.status(200).json({ message1: s })};
+  const printError = error => {  res.status(400).json({ message: "Error occured. "+error})};
+  // getIPAddress();
   
     switch (parseInt(itemId)) {
       case 3:
-          requests[3](schema,url);
+             requests[3](body.schema,body.url).then(printSuccess);
           break;
       case 4:
-          requests[4](schema,url);
+          requests[4](body.schema,body.url).then(printSuccess).catch(printError);
           break;
       case 5:
-          requests[5](schema,url);
+          requests[5](body.schema,body.url).then(printSuccess).catch(printError);
           break;
       default:
-          console.log('Invalid index');
+        res.status(404).json({ message: "Invalid index for POST. Use only 3,4,5"})
+        console.log('Invalid index for POST. Use only 3,4,5');
           break;
   }
   
@@ -95,3 +96,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+

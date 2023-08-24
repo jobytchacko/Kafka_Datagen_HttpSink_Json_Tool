@@ -13,7 +13,8 @@ const instancesClient = new InstancesClient();
 
 
 export async function createInstance() {
-
+  
+  getIPAddress();
   console.log(`\n\nCreating =>\nINSTANCE : ${instanceName} \nZONE     : ${zone}`);
 
   const [response] =  await instancesClient.insert({
