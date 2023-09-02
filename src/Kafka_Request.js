@@ -31,7 +31,7 @@ let file_schema = {
     "name": "Datagen_file_schema",
     "schema.string": "{\"connect.name\":\"lithin.personal.ust_data\",\"name\":\"ust_data\",\"namespace\":\"lithin.personal\",\"type\":\"record\",\"fields\":[{\"name\":\"store_id\",\"type\":{\"type\":\"int\",\"arg.properties\":{\"range\":{\"min\":1,\"max\":100}}}},{\"name\":\"order_lines\",\"type\":{\"type\":\"array\",\"items\":{\"name\":\"order_line\",\"type\":\"record\",\"fields\":[{\"name\":\"product_id\",\"type\":{\"type\":\"int\",\"arg.properties\":{\"range\":{\"min\":1,\"max\":100}}}},{\"name\":\"category\",\"type\":{\"type\":\"string\",\"arg.properties\":{\"regex\":\"User_[1-9]{0,1}\"}}},{\"name\":\"quantity\",\"type\":{\"type\":\"int\",\"arg.properties\":{\"range\":{\"min\":1,\"max\":100}}}},{\"name\":\"unit_price\",\"type\":{\"type\":\"float\",\"arg.properties\":{\"range\":{\"min\":0.1,\"max\":10}}}},{\"name\":\"net_price\",\"type\":{\"type\":\"float\",\"arg.properties\":{\"range\":{\"min\":0.1,\"max\":10}}}}]},\"arg.properties\":{\"length\":{\"min\":1,\"max\":5}}}}]}",
     "tasks.max": "1",
-    "kafka.topic": "Regex_Schema"
+    "kafka.topic": "Template_Schema"
   }
 };
 
@@ -44,7 +44,7 @@ let sink_url = {
     "key.converter": "org.apache.kafka.connect.storage.StringConverter",
     "value.converter": "io.confluent.connect.avro.AvroConverter",
     "topics": "Regex_Schema",
-    "http.api.url": "https://kafkasinkcollector-tava5544oa-uc.a.run.app",
+    "http.api.url": "https://kafkasinkcollector-xdms6u477a-uc.a.run.app",
     "request.method": "post",
     "reporter.result.topic.replication.factor": "1",
     "reporter.error.topic.replication.factor": "1",
@@ -54,32 +54,41 @@ let sink_url = {
 
 
 const schema_replace_s = (schema) => { if( schema != "" && schema != undefined) ld.set(template, ['config', 'schema.string'], schema);  return JSON.stringify(template)}
-const schema_replace_f = (json) => { if( json != "") ld.set(file_schema, ['config', 'schema.string'], JSON.stringify(generate(json)));  return JSON.stringify(file_schema) }
+const schema_replace_f = (json) => { if( json != "" && json != undefined) ld.set(file_schema, ['config', 'schema.string'], JSON.stringify(generate(json)));  return JSON.stringify(file_schema) }
+const schema_replace_t = (template_user) => { if( template_user != "" && template_user != undefined) return template_user; else  return JSON.stringify(template)}
 
 const schema_replace_url = (url) => { if( url != "" && url != undefined) ld.set(sink_url, ['config', 'http.api.url'], url);  return JSON.stringify(sink_url)}
 
 
-// const url1 = (a,b,c) => { request({ url: ips[2]+'/subjects/'+a, method: 'DELETE'}).then(b).then(c).then(() =>  {return "Connector created"}).catch(printError) }
 const url2 = (template) =>  request({ url: ips[0]+'/connectors', method: 'POST', data: template }).then(printData).catch(printError) 
-const url3 = (template) => request({ url: ips[0]+'/connectors', method: 'POST', data: template}).then(printDataFull).catch(printError)
+const url3 = (template) => request({ url: ips[0]+'/connectors', method: 'POST', data: template}).then(printData).catch(printError)
 
 
 const req1 =  () =>  createInstance().catch(e => {return e});
 const req2 =   () => request({ url: ips[0]+'/connector-plugins' }).then( printDataFull ).catch(printError)    
-const  req3 = async (schema,url) =>     {
-  const error = {};
-  // const response = await request({ url: ips[2]+'/subjects/'+"Template_Schema-value", method: 'DELETE'}).catch(s=> gh.hj = s);
-  const resp1 =  await url2(schema_replace_s(schema)).catch(s=> error.a = s);
-  const resp2 = await (url2(schema_replace_url(url))).catch(s=> error.b = s);
 
-  console.log(  resp1, resp2 , error  );
-  // .then(fs.readFileSync('output.txt','utf8')).catch(printError) 
+const  req3 = async (schema,url) =>     { let error ="";
+const response = await request({ url: ips[2]+'/subjects/'+"Template_Schema-value", method: 'DELETE'}).catch(s=> error = s.code);
+const resp1 =  await url2(schema_replace_s(schema));
+const resp2 = await (url2(schema_replace_url(url)));
+return {resp1, resp2 , error}
 }
-// .then(() =>  {return "Connector created"}  )    }
-const req4 = (schema,url) =>  { url1( "Regex_Schema-value" ,  url2(schema_replace_f(schema))  , url2(schema_replace_url(url))).then(() =>  {return "Connector created"}  ) }
 
-const req5 = (schema,url) => url3(schema);
-const req6 =  () =>   deleteInstance().catch(e => {return e});
+const req4 = async (schema,url) =>     { let error ="";
+const response = await request({ url: ips[2]+'/subjects/'+"Template_Schema-value", method: 'DELETE'}).catch(s=> error = s.code);
+const resp1 =  await url2(schema_replace_f(schema));
+const resp2 = await (url2(schema_replace_url(url)));
+return {resp1, resp2 , error}
+}
+
+const req5 = async (schema,url) => { let error ="";
+const response = await request({ url: ips[2]+'/subjects/'+"Template_Schema-value", method: 'DELETE'}).catch(s=> error = s.code);
+const resp1 =  await url2(schema_replace_t(schema));
+const resp2 = await (url2(schema_replace_url(url)));
+return {resp1, resp2 , error}
+}
+
+const req6 =  () =>   deleteInstance().catch(e => {return e}); 
 const req7 =  () => {   }
 const req8 =  () =>  del_connectors() ;
 
@@ -88,15 +97,19 @@ const req8 =  () =>  del_connectors() ;
 const dum ="";
 export const requests = [dum, req1, req2, req3, req4,req5, req6, req7 , req8];
 
-const  del_connectors = async () => {  request({ url: ips[0]+'/connectors' }).then((response) => {
+const  del_connectors = async () => { 
+  let resp_status = "";
+  let status =[];
+  const response = await  request({ url: ips[0]+'/connectors'}).catch(s=> error.del_con = s);
   if ( response.data.length  == 0)
-  {console.log("No Connectors present");  return 'No Connectors present';}
+  resp_status = 'No Connectors present';
   else{
-  response.data.forEach((element) => {
-      request({ url: ips[0]+`/connectors/${element}`, method: 'delete' }).then((s) => { console.log(element + " : DELETED"+s); return 'No Connectors present'+s});
-  })}
-})}
-
+    response.data.forEach( (element) => {
+      request({ url: ips[0]+`/connectors/${element}`, method: 'delete' });
+      status.push(element + " : DELETED")
+  }) }
+return { resp_status, status};
+}
 
 
 
@@ -104,13 +117,10 @@ const printError = (response) => {
     // console.dir("HHHH"+response, { depth : null});
     let msg = jp.query(response, "$..response.data.message");
    if( msg.length != 0) 
-      {console.dir(msg); 
-        fs.appendFileSync('output.txt', msg.toString());
-      return msg; }
+      {console.dir(msg); return msg; }
       else
       { let str = "Containers aren't up..Either start the containers or Wait";
         console.log(str); 
-        fs.appendFileSync('output.txt', str);
         return str;
       }
     }

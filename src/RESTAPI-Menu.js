@@ -1,7 +1,7 @@
 import  express from 'express';
 import { requests } from './Kafka_Request.js';
 import fs from 'fs';
-// import {getIPAddress} from './Kafka_Request_VM.js'
+import {getIPAddress} from './Kafka_Request_VM.js'
 const app = express();
 app.use(express.json());
 
@@ -17,6 +17,10 @@ const questions = {
   7 :'Delete all the topics',
   8 :'Delete all the connector'
 };
+
+
+global.ips = "";
+await getIPAddress().catch(m => { console.log("\nVM is NOT created : \n") } )
 
 app.get('/services', (req, res) => {
   res.status(200).json(questions);
@@ -66,11 +70,11 @@ app.post('/services/:id', (req, res) => {
 
   const printSuccess = s => {  res.status(200).json({ message1: s })};
   const printError = error => {  res.status(400).json({ message: "Error occured. "+error})};
-  // getIPAddress();
+
   
     switch (parseInt(itemId)) {
       case 3:
-             requests[3](body.schema,body.url).then(printSuccess);
+          requests[3](body.schema,body.url).then(printSuccess);
           break;
       case 4:
           requests[4](body.schema,body.url).then(printSuccess).catch(printError);

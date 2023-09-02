@@ -14,7 +14,6 @@ const instancesClient = new InstancesClient();
 
 export async function createInstance() {
   
-  getIPAddress();
   console.log(`\n\nCreating =>\nINSTANCE : ${instanceName} \nZONE     : ${zone}`);
 
   const [response] =  await instancesClient.insert({
@@ -94,7 +93,7 @@ export async function deleteInstance() {
     instance: instanceName
   }).catch( e => {console.log('Error : VM already deleted\n'+e);return 'VM Deleted' });
   await waitOperation(response);
-  console.log('VM Deleted : ');
+  console.log('VM Deleted ');
   return 'VM Deleted';
 }
 
