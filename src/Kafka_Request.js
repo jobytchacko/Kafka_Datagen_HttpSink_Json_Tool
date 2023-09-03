@@ -3,7 +3,6 @@ import jp from 'jsonpath';
 import ld from 'lodash';
 import generate  from './Avro-schema-generator.js';
 import { createInstance, deleteInstance } from './Kafka_Request_VM.js';
-import fs from 'fs';
   
 gaxios.instance.defaults = {
   headers: {

@@ -1,6 +1,5 @@
 import  express from 'express';
 import { requests } from './Kafka_Request.js';
-import fs from 'fs';
 import {getIPAddress} from './Kafka_Request_VM.js'
 import cors from 'cors';
 
@@ -69,7 +68,6 @@ app.post('/services/:id', (req, res) => {
   const itemId = req.params.id;
   const body = req.body;
   const category = req.query.category;
-  fs.writeFileSync('output.txt','');
 
   const printSuccess = s => {  res.status(200).json({ message1: s })};
   const printError = error => {  res.status(400).json({ message: "Error occured. "+error})};
