@@ -6,7 +6,7 @@ import cors from 'cors';
 const app = express();
 app.use(express.json());
 // app.use(cors({ origin: 'http://localhost:8080' }));
-app.use(cors({ origin: 'https://reactstudy-xdms6u477a-uc.a.run.app' }));
+app.use(cors({ origin: 'https://reactstudy-xdms6u477a-uc.a.run.app' })); 
 
 let services = [];
 const questions = {
@@ -21,8 +21,6 @@ const questions = {
 };
 
 
-global.ips = "";
-await getIPAddress().catch(m => { console.log("\nVM is NOT created : \n") } )
 
 app.get('/services', (req, res) => {
   res.status(200).json(questions);

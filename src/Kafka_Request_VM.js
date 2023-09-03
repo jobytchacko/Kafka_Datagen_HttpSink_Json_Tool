@@ -11,6 +11,8 @@ process.env.GOOGLE_APPLICATION_CREDENTIALS = 'gcloud.json';
 const authClient = await auth.getClient({ scopes: 'https://www.googleapis.com/auth/cloud-platform' });
 const instancesClient = new InstancesClient();
 
+global.ips = "";
+await getIPAddress().catch(m => { console.log("\nVM is NOT created : \n") } )
 
 export async function createInstance() {
   
@@ -65,6 +67,7 @@ export async function createInstance() {
   });
 
   await waitOperation(response);
+  await getIPAddress().catch(m => { console.log("\nVM is NOT created : \n") } )
   console.log('Instance created.');
   return 'Instance created.';
 }
