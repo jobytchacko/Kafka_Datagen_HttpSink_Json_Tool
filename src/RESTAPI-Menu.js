@@ -6,7 +6,9 @@ import dotenv from 'dotenv';
 const app = express();
 app.use(express.json());
 dotenv.config();
-app.use(cors({ origin: process.env.FRONTEND_HOST })); 
+const frontend = process.env.FRONTEND_HOST;
+console.log(frontend);
+app.use(cors({ origin: frontend })); 
 
 
 let services = [];
