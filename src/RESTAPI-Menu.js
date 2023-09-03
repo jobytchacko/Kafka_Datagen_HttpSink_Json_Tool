@@ -1,12 +1,13 @@
 import  express from 'express';
 import { requests } from './Kafka_Request.js';
-import {getIPAddress} from './Kafka_Request_VM.js'
 import cors from 'cors';
+import dotenv from 'dotenv';
 
 const app = express();
 app.use(express.json());
-// app.use(cors({ origin: 'http://localhost:8080' }));
-app.use(cors({ origin: 'https://reactstudy-xdms6u477a-uc.a.run.app' })); 
+dotenv.config();
+app.use(cors({ origin: process.env.FRONTEND_HOST })); 
+
 
 let services = [];
 const questions = {
@@ -24,6 +25,11 @@ const questions = {
 
 app.get('/services', (req, res) => {
   res.status(200).json(questions);
+});
+
+app.get('/services/ipaddress', (req, res) => {
+  console.log(ips[1]);
+  res.status(200).json(ips[1]);
 });
 
 function checkSuccess(s) {

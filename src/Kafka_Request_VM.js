@@ -106,10 +106,10 @@ export async function getIPAddress() {
   const instances = await computeClient.get({ instance: instanceName, project, zone: zone });
   const ipAddress = instances[0]["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
   const ConnectorBaseUrl = 'http://' + ipAddress + ':8083';
-  const KafkaRestUrl = 'http://' + ipAddress + ':8082';
+  const ClusterUrl = 'http://' + ipAddress + ':9021';
   const SchemaRegistryUrl = 'http://' + ipAddress + ':8081';
   const BrokerUrl = 'http://' + ipAddress + ':9101';
-  global.ips = [ConnectorBaseUrl, KafkaRestUrl, SchemaRegistryUrl, BrokerUrl];
+  global.ips = [ConnectorBaseUrl, ClusterUrl, SchemaRegistryUrl, BrokerUrl];
 }
 
 
