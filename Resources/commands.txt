@@ -124,3 +124,11 @@ const machineImage = 'projects/ecstatic-cosmos-387220/global/machineImages/kafka
         ],
       },
     },
+
+
+    { "schema" : 
+    {
+     "connect": "lithin",
+     "fields": "hiiii"
+    }}
+    

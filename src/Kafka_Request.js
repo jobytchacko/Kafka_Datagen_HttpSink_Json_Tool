@@ -68,14 +68,14 @@ const req2 =   () => request({ url: ips[0]+'/connector-plugins' }).then( printDa
 
 const  req3 = async (schema,url) =>     { let error ="";
 const response = await request({ url: ips[2]+'/subjects/'+"Template_Schema-value", method: 'DELETE'}).catch(s=> error = s.code);
-const resp1 =  await url2(schema_replace_s(schema));
+const resp1 =  await url2(schema_replace_s(JSON.stringify(schema)));
 const resp2 = await (url2(schema_replace_url(url)));
 return {resp1, resp2 , error}
 }
 
-const req4 = async (schema,url) =>     { let error ="";
+const req4 = async (schema,url) => { let error ="";
 const response = await request({ url: ips[2]+'/subjects/'+"Template_Schema-value", method: 'DELETE'}).catch(s=> error = s.code);
-const resp1 =  await url2(schema_replace_f(schema));
+const resp1 =  await url2(schema_replace_f(JSON.stringify(schema)));
 const resp2 = await (url2(schema_replace_url(url)));
 return {resp1, resp2 , error}
 }
