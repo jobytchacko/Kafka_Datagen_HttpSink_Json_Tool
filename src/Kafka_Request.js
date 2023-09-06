@@ -52,7 +52,7 @@ let sink_url = {
 };
 
 
-const schema_replace_s = (schema) => { if( schema != "" && schema != undefined) ld.set(template, ['config', 'schema.string'], schema);  return JSON.stringify(template)}
+const schema_replace_s = (schema) => { if( schema != "" && schema != undefined) ld.set(template, ['config', 'schema.string'], schema); console.log(template); return JSON.stringify(template)}
 const schema_replace_f = (json) => { if( json != "" && json != undefined) ld.set(file_schema, ['config', 'schema.string'], JSON.stringify(generate(json)));  return JSON.stringify(file_schema) }
 const schema_replace_t = (template_user) => { if( template_user != "" && template_user != undefined) return template_user; else  return JSON.stringify(template)}
 
@@ -113,14 +113,18 @@ return { resp_status, status};
 
 
 const printError = (response) => { 
-    // console.dir("HHHH"+response, { depth : null});
     let msg = jp.query(response, "$..response.data.message");
    if( msg.length != 0) 
       {console.dir(msg); return msg; }
       else
       { let str = "Containers aren't up..Either start the containers or Wait";
-        console.log(str); 
-        return str;
+        let str1 = "VM is deleted";
+        if( ips === "")
+        {console.log(str1);
+        return str1;}
+      else
+        {console.log(str); 
+        return str;}
       }
     }
 

@@ -96,6 +96,7 @@ export async function deleteInstance() {
     instance: instanceName
   }).catch( e => {console.log('Error : VM already deleted\n'+e);return 'VM Deleted' });
   await waitOperation(response);
+  ips = "";
   console.log('VM Deleted ');
   return 'VM Deleted';
 }
