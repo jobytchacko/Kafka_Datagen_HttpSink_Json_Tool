@@ -6,7 +6,7 @@ const zone = 'us-central1-a'
 const instanceName = 'kafkavm'
 const machineType = 'e2-standard-4';
 const sourceImage = 'projects/debian-cloud/global/images/family/debian-11';
-const machineImage = 'projects/ecstatic-cosmos-387220/global/machineImages/kafka-datagen-connect-image'; 
+const machineImage = 'projects/cloudtest-396310/global/machineImages/mimic-data-framework-ust'; 
 
 process.env.GOOGLE_APPLICATION_CREDENTIALS = 'gcloud.json';
 const authClient = await auth.getClient({ scopes: 'https://www.googleapis.com/auth/cloud-platform' });
@@ -30,7 +30,7 @@ export async function createInstance() {
             value: `
               #!/bin/bash
               git clone https://github.com/Lithin87/Kafka_Datagen_HttpSink_Json_Tool.git /home/ravindcable5/app
-              cd /home/ravindcable5/app/Resources && docker-compose start `,
+              cd /home/ravindcable5/app/Resources && docker-compose up `,
           },
         ],
       },
