@@ -6,6 +6,7 @@ const zone = 'us-central1-a'
 const instanceName = 'kafkavm'
 const machineType = 'e2-standard-4';
 const sourceImage = 'projects/debian-cloud/global/images/family/debian-11';
+const machineImage = 'projects/ecstatic-cosmos-387220/global/machineImages/kafka-datagen-connect-image'; 
 
 process.env.GOOGLE_APPLICATION_CREDENTIALS = 'gcloud.json';
 const authClient = await auth.getClient({ scopes: 'https://www.googleapis.com/auth/cloud-platform' });
@@ -21,42 +22,15 @@ export async function createInstance() {
   const [response] =  await instancesClient.insert({
     instanceResource: {
       name: instanceName,
-      disks: [
-        {
-          initializeParams: {
-            diskSizeGb: '15',
-            sourceImage,
-          },
-          autoDelete: true,
-          boot: true,
-          type: 'pd-ssd',
-        },
-      ],
-      machineType: `zones/${zone}/machineTypes/${machineType}`,
-      networkInterfaces: [
-        {
-          network: 'global/networks/default',
-          accessConfigs: [
-            {
-              name: 'External NAT',
-              type: 'ONE_TO_ONE_NAT'
-            }
-          ],
-          tags: ['http-server', 'https-server'],
-        }
-      ],
+      sourceMachineImage: machineImage,
       metadata: {
         items: [
           {
             key: 'startup-script',
             value: `
               #!/bin/bash
-              apt install -y docker.io
-              curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-              chmod +x /usr/local/bin/docker-compose
               git clone https://github.com/Lithin87/Kafka_Datagen_HttpSink_Json_Tool.git /home/ravindcable5/app
-              cd /home/ravindcable5/app/Resources && docker-compose up -d
-            `,
+              cd /home/ravindcable5/app/Resources && docker-compose start `,
           },
         ],
       },

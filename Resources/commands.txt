@@ -118,12 +118,69 @@ const machineImage = 'projects/ecstatic-cosmos-387220/global/machineImages/kafka
             key: 'startup-script',
             value: `
               #!/bin/bash
-              git clone https://github.com/Lithin87/Kafka_Datagen_HttpSink_Json_Tool.git /home/ravindcable4/app
-              cd /home/ravindcable4/app/Resources && docker-compose start `,
+              git clone https://github.com/Lithin87/Kafka_Datagen_HttpSink_Json_Tool.git /home/ravindcable5/app
+              cd /home/ravindcable5/app/Resources && docker-compose start `,
           },
         ],
       },
     },
+
+    instanceResource: {
+      name: instanceName,
+      disks: [
+        {
+          initializeParams: {
+            diskSizeGb: '15',
+            sourceImage,
+          },
+          autoDelete: true,
+          boot: true,
+          type: 'pd-ssd',
+        },
+      ],
+      machineType: `zones/${zone}/machineTypes/${machineType}`,
+      networkInterfaces: [
+        {
+          network: 'global/networks/default',
+          accessConfigs: [
+            {
+              name: 'External NAT',
+              type: 'ONE_TO_ONE_NAT'
+            }
+          ],
+          tags: ['http-server', 'https-server'],
+        }
+      ],
+      metadata: {
+        items: [
+          {
+            key: 'startup-script',
+            value: `
+              #!/bin/bash
+              apt install -y docker.io
+              curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              chmod +x /usr/local/bin/docker-compose
+              git clone https://github.com/Lithin87/Kafka_Datagen_HttpSink_Json_Tool.git /home/ravindcable5/app
+              cd /home/ravindcable5/app/Resources && docker-compose up -d
+            `,
+          },
+        ],
+      },
+    },
+
+    
+sudo docker pull confluentinc/cp-kafka-rest:7.3.3
+sudo docker pull confluentinc/ksqldb-examples:7.3.3
+sudo docker pull confluentinc/cp-ksqldb-cli:7.3.3
+sudo docker pull confluentinc/cp-ksqldb-server:7.3.3
+sudo docker pull confluentinc/cp-enterprise-control-center:7.3.3
+sudo docker pull lithin87/sink-connect
+sudo docker pull confluentinc/cp-schema-registry:7.3.3
+sudo docker pull confluentinc/cp-server:7.3.3
+sudo docker pull confluentinc/cp-zookeeper:7.3.3
+
+
+
 
 ================================================================================
     { "schema" : 
