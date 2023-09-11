@@ -239,3 +239,8 @@ sudo docker pull confluentinc/cp-zookeeper:7.3.3
 }
 
 }
+
+===========================================================================================   
+{
+   "data": "pls give a  sample json message with first key named as name, age, address, car"
+}

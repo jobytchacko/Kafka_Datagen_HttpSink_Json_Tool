@@ -3,7 +3,8 @@ import jp from 'jsonpath';
 import ld from 'lodash';
 import generate  from './Avro-schema-generator.js';
 import { createInstance, deleteInstance } from './Kafka_Request_VM.js';
-  
+import { ChatGPTAPI } from 'chatgpt';
+
 gaxios.instance.defaults = {
   headers: {
     'Content-Type': 'application/json',
@@ -90,11 +91,11 @@ return {resp1, resp2 , error}
 const req6 =  () =>   deleteInstance().catch(e => {return e}); 
 const req7 =  () => {   }
 const req8 =  () =>  del_connectors() ;
-
+const req9 = (msg) => chatgpt(msg) ;
 // const request6 = () => { method: 'POST', url: 'https://example.com/api/data2', body: { name: 'John', age: 30 } };
 
 const dum ="";
-export const requests = [dum, req1, req2, req3, req4,req5, req6, req7 , req8];
+export const requests = [dum, req1, req2, req3, req4,req5, req6, req7 , req8, req9];
 
 const  del_connectors = async () => { 
   let resp_status = "";
@@ -127,6 +128,20 @@ const printError = (response) => {
         return str;}
       }
     }
+
+    
+const chatgpt = async (msg) =>  {
+  const api = new ChatGPTAPI({
+    apiKey: process.env.OPENAI_API_KEY,
+  })
+  msg = msg + ". Also return in json format "
+    console.dir(msg, { depth : null});
+    if (msg == null || Object.keys(msg).length === 0)  return "Pls send json data"; 
+    const res = await api.sendMessage(msg)
+    const matches = res.text.match(/```([\s\S]*?)```/g);
+    return matches[0].replace(/```/g, '').replace('json', '');
+  }
+
 
 const printData = (response) => { let gh = jp.query(response, "$..statusText",1) ; console.log(gh); return gh} ;
 

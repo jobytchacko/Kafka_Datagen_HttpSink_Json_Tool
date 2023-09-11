@@ -87,6 +87,9 @@ app.post('/services/:id', (req, res) => {
       case 5:
           requests[5](body.schema,body.url).then(printSuccess).catch(printError);
           break;
+      case 9:
+          requests[9](body.data).then((s) => res.status(200).send(s)).catch(printError);
+          break;
       default:
         res.status(404).json({ message: "Invalid index for POST. Use only 3,4,5"})
         console.log('Invalid index for POST. Use only 3,4,5');
